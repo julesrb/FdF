@@ -24,6 +24,8 @@ parse_map(char file_name)
 		line = get_next_line(fd);
 		l++
 		map
+		//itoa
+		//malloc
 	}
 }
 
