@@ -27,56 +27,56 @@ HEADERS_LIST = libft.h
 # SOURCES
 SOURCES = $(addprefix $(SOURCES_DIRECTORY), $(SOURCES_LIST))
 SOURCES_DIRECTORY = ./sources/
-SOURCES_LIST = ./char_operation/ft_isalnum.c \
-				./char_operation/ft_isascii.c \
-				./char_operation/ft_isprint.c \
-				./char_operation/ft_toupper.c \
-				./char_operation/ft_isalpha.c \
-				./char_operation/ft_isdigit.c \
-				./char_operation/ft_tolower.c \
-				./get_next_line/get_next_line.c \
-				./get_next_line/get_next_line_util.c \
-				./linked_list/ft_lstadd_back.c \
-				./linked_list/ft_lstclear.c \
-				./linked_list/ft_lstiter.c \
-				./linked_list/ft_lstmap.c \
-				./linked_list/ft_lstsize.c \
-				./linked_list/ft_lstadd_front.c \
-				./linked_list/ft_lstdelone.c \
-				./linked_list/ft_lstlast.c \
-				./linked_list/ft_lstnew.c \
-				./memory_manipulation/ft_bzero.c \
-				./memory_manipulation/ft_memccpy.c \
-				./memory_manipulation/ft_memcmp.c \
-				./memory_manipulation/ft_memmove.c \
-				./memory_manipulation/ft_calloc.c \
-				./memory_manipulation/ft_memchr.c \
-				./memory_manipulation/ft_memcpy.c \
-				./memory_manipulation/ft_memset.c \
-				./string_manipulation/ft_split.c \
-				./string_manipulation/ft_striteri.c \
-				./string_manipulation/ft_strlcpy.c \
-				./string_manipulation/ft_strncmp.c \
-				./string_manipulation/ft_strtrim.c \
-				./string_manipulation/ft_strchr.c \
-				./string_manipulation/ft_strjoin.c \
-				./string_manipulation/ft_strlen.c \
-				./string_manipulation/ft_strnstr.c \
-				./string_manipulation/ft_substr.c \
-				./string_manipulation/ft_strdup.c \
-				./string_manipulation/ft_strlcat.c \
-				./string_manipulation/ft_strmapi.c \
-				./string_manipulation/ft_strrchr.c \
-				./var_convetion/ft_atoi.c \
-				./var_convetion/ft_itoa.c \
-				./write_and_print/ft_printf.c \
-				./write_and_print/ft_putchar_fd.c \
-				./write_and_print/ft_puthex_fd.c \
-				./write_and_print/ft_putnbr_uns_fd.c \
-				./write_and_print/ft_putadd_fd.c \
-				./write_and_print/ft_putendl_fd.c \
-				./write_and_print/ft_putnbr_fd.c \
-				./write_and_print/ft_putstr_fd.c \
+SOURCES_LIST = ft_isalnum.c \
+				ft_isascii.c \
+				ft_isprint.c \
+				ft_toupper.c \
+				ft_isalpha.c \
+				ft_isdigit.c \
+				ft_tolower.c \
+				get_next_line.c \
+				get_next_line_util.c \
+				ft_lstadd_back.c \
+				ft_lstclear.c \
+				ft_lstiter.c \
+				ft_lstmap.c \
+				ft_lstsize.c \
+				ft_lstadd_front.c \
+				ft_lstdelone.c \
+				ft_lstlast.c \
+				ft_lstnew.c \
+				ft_bzero.c \
+				ft_memccpy.c \
+				ft_memcmp.c \
+				ft_memmove.c \
+				ft_calloc.c \
+				ft_memchr.c \
+				ft_memcpy.c \
+				ft_memset.c \
+				ft_split.c \
+				ft_striteri.c \
+				ft_strlcpy.c \
+				ft_strncmp.c \
+				ft_strtrim.c \
+				ft_strchr.c \
+				ft_strjoin.c \
+				ft_strlen.c \
+				ft_strnstr.c \
+				ft_substr.c \
+				ft_strdup.c \
+				ft_strlcat.c \
+				ft_strmapi.c \
+				ft_strrchr.c \
+				ft_atoi.c \
+				ft_itoa.c \
+				ft_printf.c \
+				ft_putchar_fd.c \
+				ft_puthex_fd.c \
+				ft_putnbr_uns_fd.c \
+				ft_putadd_fd.c \
+				ft_putendl_fd.c \
+				ft_putnbr_fd.c \
+				ft_putstr_fd.c \
 
 # OBJECTS
 OBJECTS_DIRECTORY = objects/
@@ -93,6 +93,11 @@ CLR_MAGENTA = \033[0;35m
 CLR_RESET	= \033[0m
 
 all: $(NAME)
+
+$(OBJECTS_DIRECTORY)%.o:		%.c libft.h
+			@mkdir -p objs/
+			@echo "Compiling: $<"
+			@${CC} -c -o $@ $< ${CFLAGS} 
 
 $(NAME): $(OBJECTS_DIRECTORY) $(OBJECTS)
 	@$(AR) $(ARFLAGS) $(NAME) $(OBJECTS)
