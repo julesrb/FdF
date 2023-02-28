@@ -79,7 +79,7 @@ SOURCES_LIST = ft_isalnum.c \
 				ft_putstr_fd.c \
 
 # OBJECTS
-OBJECTS_DIRECTORY = objects/
+OBJECTS_DIRECTORY = ./objects/
 OBJECTS_LIST = $(patsubst %.c, %.o, $(SOURCES_LIST))
 OBJECTS	= $(addprefix $(OBJECTS_DIRECTORY), $(OBJECTS_LIST))
 
@@ -93,11 +93,6 @@ CLR_MAGENTA = \033[0;35m
 CLR_RESET	= \033[0m
 
 all: $(NAME)
-
-$(OBJECTS_DIRECTORY)%.o:		%.c libft.h
-			@mkdir -p objs/
-			@echo "Compiling: $<"
-			@${CC} -c -o $@ $< ${CFLAGS} 
 
 $(NAME): $(OBJECTS_DIRECTORY) $(OBJECTS)
 	@$(AR) $(ARFLAGS) $(NAME) $(OBJECTS)
