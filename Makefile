@@ -12,13 +12,14 @@
 
 # -----------\ Name \--------------------------------------------------------- #
 
-NAME	= libft.a
+NAME	= fdf
 
 # -----------\ Directories \-------------------------------------------------- #
 
 INC_DIREC = ./includes/
 SRC_DIREC = sources/
 OBJ_DIREC = objects/
+LIBFT_DIR = libft/
 
 # -----------\ Compilation \-------------------------------------------------- #
 
@@ -78,12 +79,16 @@ SRC_FILES += $(addprefix $(STR_DIREC), $(STR_FILES))
 
 all:		$(NAME)
 
-$(NAME): DIR $(OBJS)
-				@$(AR) $(NAME) $(OBJS)
+$(NAME): $(LIBFT) $(MINILIBX) DIR $(OBJS) 
+				@$(CC) $(CFLAGS) $(LIBRARIE)
 				@echo "- Library $(NAME) created !"
 
+$(LIBFT):
+				@$(MAKE) -c $(LIBFT_DIR)
+
+
 $(OBJ_DIREC)%.o : $(SRC_DIREC)%.c
-				@$(CC) $(CFLAG) $(INCLUDES) -c $< -o $@ 
+				@
 				@echo "- Compiled $<"
 
 DIR:
@@ -98,11 +103,11 @@ DIR:
 				@$(MD) $(OBJ_DIREC)$(STR_DIREC)
 
 clean :
-				@$(RM) -rf $(OBJ_DIREC)
+				@$
 				@echo "- Deleted $(OBJ_DIREC) successfully"
 
 fclean :		clean
-				@$(RM) -f $(NAME)
+				@$
 				@echo "- Deleted $(NAME) successfully"
 
 re:				fclean all
