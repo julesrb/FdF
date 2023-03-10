@@ -5,15 +5,14 @@
 
 #define MAP_SIZE_MAX 100
 
-
 int parse_map(char *file_name)
 {
 	int	fd;
-	int	l;
+	int	row;
 	char *line;
-	char *map[MAP_SIZE_MAX];
+	char **map;
 
-	l = 0;
+	row = 0;
 	fd = open(file_name, O_RDONLY);
 	if (fd < 0)
 		{
@@ -24,13 +23,34 @@ int parse_map(char *file_name)
 	{	
 		line = get_next_line(fd);
 		if (line)
-			l++;
-		ft_printf("%s",line);
-		//itoa
-		//malloc
+			row++;
 	}
-	ft_printf("\n %i",l);
-	return (0);
+	close(fd);
+	ft_printf("\n Map contains %i rows \n",row);
+	map = (char**)malloc(row * sizeof(char*));
+	if(!map)
+		return (0);
+	
+		fd = open(file_name, O_RDONLY);
+	if (fd < 0)
+		{
+			ft_printf("!! File reading problem !!");
+			return (0);
+		}
+	while (line)
+	{	
+		line = get_next_line(fd);
+		if (line)
+			row++;
+	}
+	close(fd);
+
+	ft_split(line, " ");
+	ft_printf("%s",line);
+	//itoa
+	//test if color
+	//malloc 3d
+
 }
 
 int	main (int argc, char *argv[])
@@ -40,21 +60,19 @@ int	main (int argc, char *argv[])
 		ft_printf("!! Incorrect number of arguments !!");
 		return (0);
 	}
-
 	if (ft_strnstr(argv[1], ".fdf", ft_strlen(argv[1])) == 0)
 	{
 		ft_printf("!! wrong extension !!");
 		return (0);
 	}
-
-	parse_map(argv[1]);
+	if (parse_map(argv[1]) == 0)
+		return (0);
 
 	//save map 
 
 
 	return (0);
 }
-
 
 
 /* https://github.com/sungwoo-shin/ecole42-42cursus/tree/main/02-FdF */
