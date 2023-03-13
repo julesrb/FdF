@@ -83,7 +83,9 @@ int parse_map(char *file_name)
 		return (0);
 	while (loc < row)
 		{
-			map[loc]
+			map[loc] = (t_intersection*)malloc(col * sizeof(t_intersection));
+			if(!map[loc])
+				return (0);
 			loc++;
 		}
 
