@@ -24,12 +24,11 @@ void	line_to_map_data(t_intersection **map, char *line, size_t col, size_t row)
 	split = ft_split(line, ' ');
 	while (i < col)
 	{
-		ft_printf("here%i",i);
-		ft_printf("here%i",row);
-		ft_printf("here%i",ft_atoi(split[i]));
+		ft_printf("test%i",ft_atoi(split[i]));
 		map[row][i].height = ft_atoi(split[i]);
 		if (ft_strchr(split[i], ','))
-			ft_printf("found colors");
+			map[row][i].color = HEXA TO INT
+			ft_strchr(split[i], ',')
 		i++;
 	}
 
@@ -44,12 +43,13 @@ int parse_map(char *file_name)
 	size_t		col;
 	char	*line;
 	char	**split;
-	t_intersection** map;
+	t_intersection **map;
 	// map[row][col];
 
 	i = 0;
 	row = 0;
 	col = 0;
+	loc = 0;
 	fd = open(file_name, O_RDONLY);
 	if (fd < 0)
 	{
