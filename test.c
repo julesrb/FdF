@@ -12,18 +12,42 @@ int count_split(char **split)
 	while (split[c] != 0)
 		c++;
 	return (c);
+
+}
+
+void	line_to_map_data(t_intersection **map, char *line, size_t col, size_t row)
+{
+	char	**split;
+	size_t		i;
+
+	i = 0;
+	split = ft_split(line, ' ');
+	while (i < col)
+	{
+		ft_printf("here%i",i);
+		ft_printf("here%i",row);
+		ft_printf("here%i",ft_atoi(split[i]));
+		map[row][i].height = ft_atoi(split[i]);
+		if (ft_strchr(split[i], ','))
+			ft_printf("found colors");
+		i++;
+	}
+
 }
 
 int parse_map(char *file_name)
 {
 	int		fd;
-	int		row;
-	int		col;
+	size_t		i;
+	size_t		loc;
+	size_t		row;
+	size_t		col;
 	char	*line;
 	char	**split;
-	t_intersection **map;
+	t_intersection** map;
 	// map[row][col];
 
+	i = 0;
 	row = 0;
 	col = 0;
 	fd = open(file_name, O_RDONLY);
@@ -37,6 +61,7 @@ int parse_map(char *file_name)
 			row++;
 	split = ft_split(line, ' ');
 	col = count_split(split);
+	//free the split
 	ft_printf("\n Map contains %i columns \n",col);
 	while (line)
 	{
@@ -53,9 +78,14 @@ int parse_map(char *file_name)
 
 	// Re open and copy map. 
 
-	map = malloc(row * col * sizeof(t_intersection));
+	map = (t_intersection**)malloc(row * sizeof(t_intersection*));
 	if(!map)
 		return (0);
+	while (loc < row)
+		{
+			map[loc]
+			loc++;
+		}
 
 	// NOW I NEED TO DISTRIBUTE THE DATA IN THE @D ARRAY WITH SPLIT
 	fd = open(file_name, O_RDONLY);
@@ -64,16 +94,16 @@ int parse_map(char *file_name)
 		ft_printf("!! File reading problem !!");
 		return (0);
 	}
-	while (line)
+	while (i < row)
 	{	
 		line = get_next_line(fd);
-		if (line)
-			row++;
+		line_to_map_data(map, line, col, i);
+		i++;
 	}
 	close(fd);
 
 
-	//itoa
+	//atoi
 	//test if color
 	//malloc 3d
 	return (0);
