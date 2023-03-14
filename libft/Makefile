@@ -40,7 +40,7 @@ GNL_DIREC = gnl/
 GNL_FILES = get_next_line get_next_line_util
 
 TO_DIREC = to/
-TO_FILES = ft_atoi ft_itoa ft_tolower ft_toupper
+TO_FILES = ft_atoi ft_itoa ft_tolower ft_toupper ft_atohex
 
 IS_DIREC = is/
 IS_FILES = ft_isalpha ft_isdigit ft_isalnum ft_isascii ft_isprint

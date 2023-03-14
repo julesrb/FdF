@@ -24,14 +24,13 @@ void	line_to_map_data(t_intersection **map, char *line, size_t col, size_t row)
 	split = ft_split(line, ' ');
 	while (i < col)
 	{
-		ft_printf("test%i",ft_atoi(split[i]));
+		ft_printf("-%i",ft_atoi(split[i]));
 		map[row][i].height = ft_atoi(split[i]);
 		if (ft_strchr(split[i], ','))
-			map[row][i].color = HEXA TO INT
-			ft_strchr(split[i], ',')
+			map[row][i].color = 0xff;
 		i++;
 	}
-
+	// THink about implementing the colors management.
 }
 
 int parse_map(char *file_name)
@@ -100,6 +99,7 @@ int parse_map(char *file_name)
 	{	
 		line = get_next_line(fd);
 		line_to_map_data(map, line, col, i);
+		ft_printf("\n");
 		i++;
 	}
 	close(fd);
