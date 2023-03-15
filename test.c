@@ -1,8 +1,14 @@
 /* need to inc for open  */
 #include <fcntl.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <unistd.h>
+#include "MLX42/include/MLX42/MLX42.h"
 
 #include "includes/fdf.h"
 #include "libft/includes/libft.h"
+#define WIDTH 1080
+#define HEIGHT 720
 
 int count_split(char **split)
 {
@@ -103,16 +109,15 @@ int parse_map(char *file_name)
 		i++;
 	}
 	close(fd);
-
-
-	//atoi
-	//test if color
-	//malloc 3d
 	return (0);
 }
 
-int	main (int argc, char *argv[])
+int32_t	main (int argc, char *argv[])
 {
+	mlx_t*			mlx;
+	mlx_image_t*	bckgnd;
+
+
 	if (argc != 2)
 	{
 		ft_printf("!! Incorrect number of arguments !!");
@@ -123,14 +128,42 @@ int	main (int argc, char *argv[])
 		ft_printf("!! wrong extension !!");
 		return (0);
 	}
-	if (parse_map(argv[1]) == 0)
+	if (parse_map(argv[1]) == -1)
 		return (0);
 
-	//save map 
+	mlx = mlx_init(WIDTH, HEIGHT, "fdf - MLX42", false);
+	// include mlx errno and exit and resizing.
+	bckgnd = mlx_new_image(mlx, WIDTH, HEIGHT);
+	// include mlx errno and exit 
 
+	//setting the background color
+	ft_memset(bckgnd->pixels, 240, bckgnd->width * bckgnd->height * sizeof(int32_t));
+	mlx_image_to_window(mlx, bckgnd, 0, 0);
 
-	return (0);
+	mlx_loop(mlx);
+	// do i need mlx_delete_image ?
+	mlx_terminate(mlx);
+	return (EXIT_SUCCESS);
 }
+
+// start codam minilib
+
+// draw a line
+
+// build my makefile 
+/*
+git clone https://github.com/codam-coding-college/MLX42.git
+cd MLX42
+cmake -B build
+cmake --build build -j4
+*/
+
+// Perror and sterror
+
+// draw the parameter on screen.
+
+// do i need my atohex ?
+
 
 
 /* https://github.com/sungwoo-shin/ecole42-42cursus/tree/main/02-FdF */
