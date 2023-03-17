@@ -20,4 +20,11 @@ typedef struct s_intersection
 	int	color;
 }	t_intersection;
 
+typedef struct s_map
+{
+	size_t		row;
+	size_t		col;
+	t_intersection **geography;
+}	t_map;
+
 #endif

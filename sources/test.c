@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
-#include "MLX42/include/MLX42/MLX42.h"
+#include "lib/MLX42/include/MLX42/MLX42.h"
 
 #include "includes/fdf.h"
 #include "libft/includes/libft.h"
@@ -18,10 +18,9 @@ int count_split(char **split)
 	while (split[c] != 0)
 		c++;
 	return (c);
-
 }
 
-void	line_to_map_data(t_intersection **map, char *line, size_t col, size_t row)
+void	line_to_map_data(t_intersection **geography, char *line, size_t col, size_t row)
 {
 	char	**split;
 	size_t		i;
@@ -31,29 +30,24 @@ void	line_to_map_data(t_intersection **map, char *line, size_t col, size_t row)
 	while (i < col)
 	{
 		ft_printf("-%i",ft_atoi(split[i]));
-		map[row][i].height = ft_atoi(split[i]);
+		geography[row][i].height = ft_atoi(split[i]);
 		if (ft_strchr(split[i], ','))
-			map[row][i].color = 0xff;
+			geography[row][i].color = 0xff;
 		i++;
 	}
 	// THink about implementing the colors management.
 }
 
-int parse_map(char *file_name)
+int parse_map(char *file_name, t_map* map)
 {
 	int		fd;
 	size_t		i;
 	size_t		loc;
-	size_t		row;
-	size_t		col;
 	char	*line;
 	char	**split;
-	t_intersection **map;
-	// map[row][col];
+	// geography[row][col];
 
 	i = 0;
-	row = 0;
-	col = 0;
 	loc = 0;
 	fd = open(file_name, O_RDONLY);
 	if (fd < 0)
@@ -63,33 +57,33 @@ int parse_map(char *file_name)
 	}
 	line = get_next_line(fd);
 	if (line)
-			row++;
+			map->row++;
 	split = ft_split(line, ' ');
-	col = count_split(split);
+	map->col = count_split(split);
 	//free the split
-	ft_printf("\n Map contains %i columns \n",col);
+	ft_printf("\n Map contains %i columns \n", map->col);
 	while (line)
 	{
 		line = get_next_line(fd);
 		//protection
 		if (line)
-			row++;
+			map->row++;
 		
 		// recheck the free function
 		free(line);
 	}
 	close(fd);
-	ft_printf("\n Map contains %i rows \n",row);
+	ft_printf("\n Map contains %i rows \n",map->row);
 
 	// Re open and copy map. 
 
-	map = (t_intersection**)malloc(row * sizeof(t_intersection*));
-	if(!map)
+	map->geography = (t_intersection**)malloc(map->row * sizeof(t_intersection*));
+	if(!map->geography)
 		return (0);
-	while (loc < row)
+	while (loc < map->row)
 		{
-			map[loc] = (t_intersection*)malloc(col * sizeof(t_intersection));
-			if(!map[loc])
+			map->geography[loc] = (t_intersection*)malloc(map->col * sizeof(t_intersection));
+			if(!map->geography[loc])
 				return (0);
 			loc++;
 		}
@@ -101,10 +95,10 @@ int parse_map(char *file_name)
 		ft_printf("!! File reading problem !!");
 		return (0);
 	}
-	while (i < row)
+	while (i < map->row)
 	{	
 		line = get_next_line(fd);
-		line_to_map_data(map, line, col, i);
+		line_to_map_data(map->geography, line, map->col, i);
 		ft_printf("\n");
 		i++;
 	}
@@ -116,6 +110,7 @@ int32_t	main (int argc, char *argv[])
 {
 	mlx_t*			mlx;
 	mlx_image_t*	bckgnd;
+	t_map			map = {0, 0, 0};
 
 
 	if (argc != 2)
@@ -125,30 +120,29 @@ int32_t	main (int argc, char *argv[])
 	}
 	if (ft_strnstr(argv[1], ".fdf", ft_strlen(argv[1])) == 0)
 	{
-		ft_printf("!! wrong extension !!");
+		ft_printf("!! Wrong extension !!");
 		return (0);
 	}
-	if (parse_map(argv[1]) == -1)
+	if (parse_map(argv[1], &map) == -1)
 		return (0);
 
-	mlx = mlx_init(WIDTH, HEIGHT, "fdf - MLX42", false);
+	mlx = mlx_init(WIDTH, HEIGHT, "FDF", false);
 	// include mlx errno and exit and resizing.
 	bckgnd = mlx_new_image(mlx, WIDTH, HEIGHT);
 	// include mlx errno and exit 
 
 	//setting the background color
-	ft_memset(bckgnd->pixels, 240, bckgnd->width * bckgnd->height * sizeof(int32_t));
+	ft_memset(bckgnd->pixels, 50, bckgnd->width * bckgnd->height * sizeof(int32_t));
 	mlx_image_to_window(mlx, bckgnd, 0, 0);
-
+	mlx_put_string(mlx, "map name", 20, 20);
+	mlx_put_string(mlx, argv[1], 120, 20);
+	mlx_put_string(mlx, "map size", 20, 40);
+	mlx_put_string(mlx, ft_itoa(map.col), 120, 40);
 	mlx_loop(mlx);
 	// do i need mlx_delete_image ?
 	mlx_terminate(mlx);
 	return (EXIT_SUCCESS);
 }
-
-// start codam minilib
-
-// draw a line
 
 // build my makefile 
 /*
@@ -158,11 +152,16 @@ cmake -B build
 cmake --build build -j4
 */
 
+// struct map 
+
+// draw a line
+
+
 // Perror and sterror
 
 // draw the parameter on screen.
 
-// do i need my atohex ?
+// deal with colors. do i need my atohex ?
 
 
 

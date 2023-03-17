@@ -23,8 +23,6 @@ OBJ_DIREC = objects/
 # -----------\ Compilation \-------------------------------------------------- #
 
 CC		= cc
-CP		= cp -f 
-RM		= rm
 AR		= ar -rcs
 MD		= -mkdir -p
 CFLAGS	= -Wall -Werror -Wextra
@@ -40,7 +38,7 @@ GNL_DIREC = gnl/
 GNL_FILES = get_next_line get_next_line_util
 
 TO_DIREC = to/
-TO_FILES = ft_atoi ft_itoa ft_tolower ft_toupper ft_atohex
+TO_FILES = ft_atoi ft_itoa ft_tolower ft_toupper
 
 IS_DIREC = is/
 IS_FILES = ft_isalpha ft_isdigit ft_isalnum ft_isascii ft_isprint

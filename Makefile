@@ -17,97 +17,57 @@ NAME	= fdf
 # -----------\ Directories \-------------------------------------------------- #
 
 INC_DIREC = ./includes/
-SRC_DIREC = sources/
-OBJ_DIREC = objects/
-LIBFT_DIR = libft/
+SRC_DIREC = ./sources/
+OBJ_DIREC = ./objects/
+LIBFT_DIR = ./lib/libft/
+LIBMLX_DIR = ./lib/MLX42
 
 # -----------\ Compilation \-------------------------------------------------- #
 
 CC		= cc
-CP		= cp -f 
-RM		= rm
 AR		= ar -rcs
 MD		= -mkdir -p
 CFLAGS	= -Wall -Werror -Wextra
 
 # -----------\ Files & sources \---------------------------------------------- #
 
-INCLUDES = -I $(INC_DIREC)
+INCLUDES = -I $(INC_DIREC) -I $(LIBFT_DIR)inc -I $(LIBMLX_DIR)inc
 
-PRT_DIREC = prt/
-PRT_FILES = ft_printf
-
-GNL_DIREC = gnl/
-GNL_FILES = get_next_line get_next_line_util
-
-TO_DIREC = to/
-TO_FILES = ft_atoi ft_itoa ft_tolower ft_toupper
-
-IS_DIREC = is/
-IS_FILES = ft_isalpha ft_isdigit ft_isalnum ft_isascii ft_isprint
-
-MEM_DIREC = mem/
-MEM_FILES = ft_bzero ft_calloc ft_memcmp ft_memcpy ft_memchr \
-            ft_memmove ft_memset ft_memccpy
-
-PUT_DIREC = put/
-PUT_FILES = ft_putchar_fd ft_putendl_fd ft_putnbr_fd ft_putstr_fd \
-			ft_putadd_fd ft_putnbr_uns_fd ft_puthex_fd
-
-LST_DIREC = lst/
-LST_FILES = ft_lstsize ft_lstadd_back ft_lstadd_front ft_lstiter \
-			ft_lstdelone ft_lstclear ft_lstlast ft_lstnew ft_lstmap
-
-STR_DIREC = str/
-STR_FILES = ft_split ft_strchr ft_strdup ft_striteri ft_strjoin \
-            ft_strlcat ft_strlcpy ft_strlen ft_strmapi ft_strncmp \
-            ft_strnstr ft_strrchr ft_strtrim ft_substr
+SRC_FILES = test
 
 SRCS = $(addprefix $(SRC_DIREC), $(addsuffix .c, $(SRC_FILES)))
 OBJS = $(addprefix $(OBJ_DIREC), $(addsuffix .o, $(SRC_FILES)))
 
-SRC_FILES += $(addprefix $(TO_DIREC), $(TO_FILES))
-SRC_FILES += $(addprefix $(IS_DIREC), $(IS_FILES))
-SRC_FILES += $(addprefix $(PRT_DIREC), $(PRT_FILES))
-SRC_FILES += $(addprefix $(GNL_DIREC), $(GNL_FILES))
-SRC_FILES += $(addprefix $(MEM_DIREC), $(MEM_FILES))
-SRC_FILES += $(addprefix $(PUT_DIREC), $(PUT_FILES))
-SRC_FILES += $(addprefix $(LST_DIREC), $(LST_FILES))
-SRC_FILES += $(addprefix $(STR_DIREC), $(STR_FILES))
-
 # -----------\ Rules \-------------------------------------------------------- #
 
-all:		$(NAME)
+all: libmlx libft $(NAME)
 
-$(NAME): $(LIBFT) $(MINILIBX) DIR $(OBJS) 
+libmlx:
+				@git clone https://github.com/codam-coding-college/MLX42.git ./lib/MLX42
+				@cmake $(LIBMLX_DIR) -B $(LIBMLX_DIR)/build && make -C $(LIBMLX_DIR)/build -j4
+
+libft:
+				@$(MAKE) -sC $(LIBFT_DIR)
+
+$(NAME): $(OBJ_DIREC) $(OBJS) 
 				@$(CC) $(CFLAGS) $(LIBRARIE)
 				@echo "- Library $(NAME) created !"
 
-$(LIBFT):
-				@$(MAKE) -c $(LIBFT_DIR)
-
-
 $(OBJ_DIREC)%.o : $(SRC_DIREC)%.c
-				@
+				@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 				@echo "- Compiled $<"
 
-DIR:
+$(OBJ_DIREC):
 				@$(MD) $(OBJ_DIREC)
-				@$(MD) $(OBJ_DIREC)$(IS_DIREC)
-				@$(MD) $(OBJ_DIREC)$(TO_DIREC)
-				@$(MD) $(OBJ_DIREC)$(PRT_DIREC)
-				@$(MD) $(OBJ_DIREC)$(GNL_DIREC)
-				@$(MD) $(OBJ_DIREC)$(MEM_DIREC)
-				@$(MD) $(OBJ_DIREC)$(PUT_DIREC)
-				@$(MD) $(OBJ_DIREC)$(LST_DIREC)
-				@$(MD) $(OBJ_DIREC)$(STR_DIREC)
+				@echo "- Created folder $(OBJ_DIREC)"
 
 clean :
-				@$
+				@rm -fr $(LIBMLX_DIR)/build
 				@echo "- Deleted $(OBJ_DIREC) successfully"
 
 fclean :		clean
-				@$
+				
+			rm -fr $(LIBMLX_DIR)
 				@echo "- Deleted $(NAME) successfully"
 
 re:				fclean all
