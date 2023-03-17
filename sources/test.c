@@ -3,10 +3,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
-#include "lib/MLX42/include/MLX42/MLX42.h"
 
-#include "includes/fdf.h"
-#include "libft/includes/libft.h"
+#include "fdf.h"
 #define WIDTH 1080
 #define HEIGHT 720
 
@@ -150,6 +148,11 @@ git clone https://github.com/codam-coding-college/MLX42.git
 cd MLX42
 cmake -B build
 cmake --build build -j4
+
+cc -Wall -Werror -Wextra ./lib/libft/libft.a ./lib/MLX42/build/libmlx42.a 
+-ldl -lglfw -pthread -lm -I ./includes/ -I ./lib/libft/includes/ 
+-I ./lib/MLX42/include/MLX42/ ./objects/test.o -o fdf
+
 */
 
 // struct map 

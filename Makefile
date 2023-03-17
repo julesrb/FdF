@@ -16,11 +16,11 @@ NAME	= fdf
 
 # -----------\ Directories \-------------------------------------------------- #
 
-INC_DIREC = ./includes/
-SRC_DIREC = ./sources/
-OBJ_DIREC = ./objects/
-LIBFT_DIR = ./lib/libft/
-LIBMLX_DIR = ./lib/MLX42
+INC_DIREC = includes/
+SRC_DIREC = sources/
+OBJ_DIREC = objects/
+LIBFT_DIR = lib/libft/
+LIBMLX_DIR = lib/MLX42/
 
 # -----------\ Compilation \-------------------------------------------------- #
 
@@ -31,7 +31,16 @@ CFLAGS	= -Wall -Werror -Wextra
 
 # -----------\ Files & sources \---------------------------------------------- #
 
-INCLUDES = -I $(INC_DIREC) -I $(LIBFT_DIR)inc -I $(LIBMLX_DIR)inc
+INCS = -I $(INC_DIREC) -I $(LIBFT_DIR)includes/ -I $(LIBMLX_DIR)include/MLX42/
+
+#- for linux -#
+LIBS = $(LIBFT_DIR)libft.a \
+		$(LIBMLX_DIR)build/libmlx42.a -ldl -lglfw -pthread -lm
+		
+
+#- for mac -#
+#LIBS = $(LIBMLX)/build/libmlx42.a -ldl -lglfw -pthread -lm \
+		-L$(LIBFT_DIR)
 
 SRC_FILES = test
 
@@ -50,11 +59,11 @@ libft:
 				@$(MAKE) -sC $(LIBFT_DIR)
 
 $(NAME): $(OBJ_DIREC) $(OBJS) 
-				@$(CC) $(CFLAGS) $(LIBRARIE)
+				$(CC) $(CFLAGS) $(OBJS) $(LIBS) $(INCS) -o $(NAME)
 				@echo "- Library $(NAME) created !"
 
 $(OBJ_DIREC)%.o : $(SRC_DIREC)%.c
-				@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+				@$(CC) $(CFLAGS) $(INCS) -c $< -o $@
 				@echo "- Compiled $<"
 
 $(OBJ_DIREC):
@@ -62,13 +71,21 @@ $(OBJ_DIREC):
 				@echo "- Created folder $(OBJ_DIREC)"
 
 clean :
-				@rm -fr $(LIBMLX_DIR)/build
-				@echo "- Deleted $(OBJ_DIREC) successfully"
+				@$(MAKE) -sC $(LIBFT_DIR) clean
+				@echo "- Deleted $(LIBFT_DIR) successfully"
+				@rm -f $(LIBMLX)/build
+				@echo "- Deleted $(LIBMLX) successfully"
+				@rm -fr $(OBJS)
+				@echo "- Deleted $(OBJS) successfully"
 
 fclean :		clean
 				
-			rm -fr $(LIBMLX_DIR)
-				@echo "- Deleted $(NAME) successfully"
+				@rm -fr $(LIBMLX_DIR)
+				@echo "- Deleted $(LIBMLX_DIR) successfully"
+				@rm -fr $(LIBFT_DIR)libft.a
+				@echo "- Deleted libft.a successfully"
+				@rm -fr fdf
+				@echo "- Deleted fdf successfully"
 
 re:				fclean all
 

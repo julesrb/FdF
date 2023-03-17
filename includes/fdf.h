@@ -13,6 +13,9 @@
 #ifndef FDF_H
 # define FDF_H
 
+# include "libft.h"
+# include "MLX42.h"
+
 
 typedef struct s_intersection
 {
