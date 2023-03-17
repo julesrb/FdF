@@ -24,7 +24,7 @@ LIBMLX_DIR = lib/MLX42/
 
 # -----------\ Compilation \-------------------------------------------------- #
 
-CC		= cc
+CC		= cc 
 AR		= ar -rcs
 MD		= -mkdir -p
 CFLAGS	= -Wall -Werror -Wextra
@@ -34,13 +34,12 @@ CFLAGS	= -Wall -Werror -Wextra
 INCS = -I $(INC_DIREC) -I $(LIBFT_DIR)includes/ -I $(LIBMLX_DIR)include/MLX42/
 
 #- for linux -#
-LIBS = $(LIBFT_DIR)libft.a \
+#LIBS = $(LIBFT_DIR)libft.a \
 		$(LIBMLX_DIR)build/libmlx42.a -ldl -lglfw -pthread -lm
-		
 
 #- for mac -#
-#LIBS = $(LIBMLX)/build/libmlx42.a -ldl -lglfw -pthread -lm \
-		-L$(LIBFT_DIR)
+LIBS = $(LIBMLX_DIR)/build/libmlx42.a -lglfw -L"/opt/homebrew/Cellar/glfw/3.3.8/lib/" \
+		$(LIBFT_DIR)libft.a
 
 SRC_FILES = test
 
