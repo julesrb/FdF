@@ -104,6 +104,16 @@ int parse_map(char *file_name, t_map* map)
 	return (0);
 }
 
+void	text_info(mlx_t *mlx, char *argv, t_map *map)
+{
+
+	mlx_put_string(mlx, "NAME", 20, 25);
+	mlx_put_string(mlx, ft_strchr(argv, '/'), 100, 25);
+	mlx_put_string(mlx, "WIDTH", 20, 50);
+	mlx_put_string(mlx, ft_itoa(map->col), 100, 50);
+	mlx_put_string(mlx, "LENGHT", 20, 75);
+	mlx_put_string(mlx, ft_itoa(map->row), 100, 75);
+}
 int32_t	main (int argc, char *argv[])
 {
 	mlx_t*			mlx;
@@ -112,15 +122,9 @@ int32_t	main (int argc, char *argv[])
 
 
 	if (argc != 2)
-	{
-		ft_printf("!! Incorrect number of arguments !!");
-		return (0);
-	}
+		return (ft_printf("!! Incorrect number of arguments !!"));
 	if (ft_strnstr(argv[1], ".fdf", ft_strlen(argv[1])) == 0)
-	{
-		ft_printf("!! Wrong extension !!");
-		return (0);
-	}
+		return (ft_printf("!! Wrong extension !!"));
 	if (parse_map(argv[1], &map) == -1)
 		return (0);
 
@@ -132,33 +136,19 @@ int32_t	main (int argc, char *argv[])
 	//setting the background color
 	ft_memset(bckgnd->pixels, 50, bckgnd->width * bckgnd->height * sizeof(int32_t));
 	mlx_image_to_window(mlx, bckgnd, 0, 0);
-	mlx_put_string(mlx, "map name", 20, 20);
-	mlx_put_string(mlx, argv[1], 120, 20);
-	mlx_put_string(mlx, "map size", 20, 40);
-	mlx_put_string(mlx, ft_itoa(map.col), 120, 40);
+
+	text_info(mlx, argv[1], &map);
+
 	mlx_loop(mlx);
 	// do i need mlx_delete_image ?
 	mlx_terminate(mlx);
 	return (EXIT_SUCCESS);
 }
 
-// build my makefile 
-/*
-git clone https://github.com/codam-coding-college/MLX42.git
-cd MLX42
-cmake -B build
-cmake --build build -j4
-
-cc -Wall -Werror -Wextra ./lib/libft/libft.a ./lib/MLX42/build/libmlx42.a 
--ldl -lglfw -pthread -lm -I ./includes/ -I ./lib/libft/includes/ 
--I ./lib/MLX42/include/MLX42/ ./objects/test.o -o fdf
-
-*/
-
-// struct map 
 
 // draw a line
 
+// struct map 
 
 // Perror and sterror
 
