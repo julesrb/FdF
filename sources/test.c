@@ -114,10 +114,32 @@ void	text_info(mlx_t *mlx, char *argv, t_map *map)
 	mlx_put_string(mlx, "LENGHT", 20, 75);
 	mlx_put_string(mlx, ft_itoa(map->row), 100, 75);
 }
+
+void draw_line(int x0, int y0, int x1, int y1, mlx_image_t	*fdf)
+{
+	int	distancex;
+	int	distancey;
+	int	fastdirection;
+	float	fault;
+
+	distancex = x1 - x0;
+	distancey = y1 - y0;
+
+	if (distancex > distancey)
+		fastdirection = distancex;
+	else
+		fastdirection = distancey;
+
+	fault = fastdirection / 2;
+	mlx_put_pixel(fdf, x0, y0, 0xFF0000FF);
+
+}
+
 int32_t	main (int argc, char *argv[])
 {
 	mlx_t*			mlx;
 	mlx_image_t*	bckgnd;
+	mlx_image_t*	fdf;
 	t_map			map = {0, 0, 0};
 
 
@@ -131,11 +153,15 @@ int32_t	main (int argc, char *argv[])
 	mlx = mlx_init(WIDTH, HEIGHT, "FDF", false);
 	// include mlx errno and exit and resizing.
 	bckgnd = mlx_new_image(mlx, WIDTH, HEIGHT);
+	fdf = mlx_new_image(mlx, WIDTH, HEIGHT);
 	// include mlx errno and exit 
 
 	//setting the background color
 	ft_memset(bckgnd->pixels, 50, bckgnd->width * bckgnd->height * sizeof(int32_t));
 	mlx_image_to_window(mlx, bckgnd, 0, 0);
+
+	draw_line(50, 50, 89, 64, fdf);
+	mlx_image_to_window(mlx, fdf, 0, 0);
 
 	text_info(mlx, argv[1], &map);
 
