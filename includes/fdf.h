@@ -17,17 +17,24 @@
 # include "MLX42.h"
 
 
-typedef struct s_intersection
+typedef struct intersection
 {
 	int	height;
 	int	color;
-}	t_intersection;
+}	intersection_t;
 
-typedef struct s_map
+typedef struct map
 {
 	size_t		row;
 	size_t		col;
-	t_intersection **geography;
-}	t_map;
+	intersection_t **coordinate;
+}	map_t;
+
+typedef struct point
+{
+	int		x;
+	int		y;
+	int	color;
+}	point_t;
 
 #endif

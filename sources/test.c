@@ -18,7 +18,7 @@ int count_split(char **split)
 	return (c);
 }
 
-void	line_to_map_data(t_intersection **geography, char *line, size_t col, size_t row)
+void	line_to_map_data(intersection_t **coordinate, char *line, size_t col, size_t row)
 {
 	char	**split;
 	size_t		i;
@@ -28,22 +28,22 @@ void	line_to_map_data(t_intersection **geography, char *line, size_t col, size_t
 	while (i < col)
 	{
 		ft_printf("-%i",ft_atoi(split[i]));
-		geography[row][i].height = ft_atoi(split[i]);
+		coordinate[row][i].height = ft_atoi(split[i]);
 		if (ft_strchr(split[i], ','))
-			geography[row][i].color = 0xff;
+			coordinate[row][i].color = 0xff;
 		i++;
 	}
 	// THink about implementing the colors management.
 }
 
-int parse_map(char *file_name, t_map* map)
+int parse_map(char *file_name, map_t* map)
 {
 	int		fd;
 	size_t		i;
 	size_t		loc;
 	char	*line;
 	char	**split;
-	// geography[row][col];
+	// coordinate[row][col];
 
 	i = 0;
 	loc = 0;
@@ -75,13 +75,13 @@ int parse_map(char *file_name, t_map* map)
 
 	// Re open and copy map. 
 
-	map->geography = (t_intersection**)malloc(map->row * sizeof(t_intersection*));
-	if(!map->geography)
+	map->coordinate = (intersection_t**)malloc(map->row * sizeof(intersection_t*));
+	if(!map->coordinate)
 		return (0);
 	while (loc < map->row)
 		{
-			map->geography[loc] = (t_intersection*)malloc(map->col * sizeof(t_intersection));
-			if(!map->geography[loc])
+			map->coordinate[loc] = (intersection_t*)malloc(map->col * sizeof(intersection_t));
+			if(!map->coordinate[loc])
 				return (0);
 			loc++;
 		}
@@ -96,7 +96,7 @@ int parse_map(char *file_name, t_map* map)
 	while (i < map->row)
 	{	
 		line = get_next_line(fd);
-		line_to_map_data(map->geography, line, map->col, i);
+		line_to_map_data(map->coordinate, line, map->col, i);
 		ft_printf("\n");
 		i++;
 	}
@@ -104,7 +104,7 @@ int parse_map(char *file_name, t_map* map)
 	return (0);
 }
 
-void	text_info(mlx_t *mlx, char *argv, t_map *map)
+void	text_info(mlx_t *mlx, char *argv, map_t *map)
 {
 
 	mlx_put_string(mlx, "NAME", 20, 25);
@@ -115,33 +115,161 @@ void	text_info(mlx_t *mlx, char *argv, t_map *map)
 	mlx_put_string(mlx, ft_itoa(map->row), 100, 75);
 }
 
-void draw_line(int x0, int y0, int x1, int y1, mlx_image_t	*fdf)
+void	calculate_gradient_steps(int steps, int color_a, int color_b , float RGBA_steps[4])
 {
-	int	distancex;
-	int	distancey;
-	int	x;
-	int	y;
+	RGBA_steps[0] = (float)((uint8_t)(color_b >> 24) - (uint8_t)(color_a >> 24)) / (float)steps;
+	RGBA_steps[1] = (float)((uint8_t)(color_b >> 16) - (uint8_t)(color_a >> 16)) / (float)steps;
+	RGBA_steps[2] = (float)((uint8_t)(color_b >> 8) - (uint8_t)(color_a >> 8)) / (float)steps;
+	RGBA_steps[3] = (float)((uint8_t)(color_b) - (uint8_t)(color_a)) / (float)steps;
+}
+
+int	calculate_gradient_color(int steps, int color_a, float RGBA_steps[4])
+{
+	return (((int)((uint8_t)(color_a >> 24) + steps * RGBA_steps[0]) & 0xFF) << 24 |
+			((int)((uint8_t)(color_a >> 16) + steps * RGBA_steps[1]) & 0xFF) << 16 |
+			((int)((uint8_t)(color_a >> 8) + steps * RGBA_steps[2]) & 0xFF) << 8 |
+			((int)((uint8_t)(color_a >> 0) + steps * RGBA_steps[3]) & 0xFF) << 0);
+}
+
+void draw_line_F_down(point_t a, point_t b, mlx_image_t *fdf)
+{
+	int	dx;
+	int	dy;
 	int	p;
+	int	i;
+	float RGBA_steps[4];
 
-	distancex = x1 - x0;
-	distancey = y1 - y0;
-	x = x0;
-	y = y0;
+	dx = b.x - a.x;
+	dy = b.y - a.y;
 
-	while(x < x1)
+	p = 2 * dy - dx;
+	i = 0;
+	ft_printf("distance fdown or gradient : %i\n", dx);
+
+	calculate_gradient_steps(dx, a.color, b.color, &*RGBA_steps);
+	while(a.x < b.x)
 	{
+		mlx_put_pixel(fdf, a.x, a.y, calculate_gradient_color(i, a.color, &*RGBA_steps));
 		if(p >= 0)
 		{
-			mlx_put_pixel(fdf, x, y, 0xFF0000FF);
-			y = y + 1;
-			p = p + 2 * distancey - 2 * distancex;
+			a.y++;
+			p = p + 2 * dy - 2 * dx;
 		}
 		else
+			p = p + 2 * dy;
+	a.x++;
+	i++;
+	}
+}
+
+void draw_line_F_up(point_t a, point_t b, mlx_image_t *fdf)
+{
+	int	dx;
+	int	dy;
+	int	p;
+	int	i;
+	float RGBA_steps[4];
+
+	dx = b.x - a.x;
+	dy = a.y - b.y;
+
+	p = 2 * dy - dx;
+	i = 0;
+	ft_printf("distance fdown or gradient : %i\n", dx);
+
+	calculate_gradient_steps(dx, a.color, b.color, &*RGBA_steps);
+	while(a.x < b.x)
+	{
+		mlx_put_pixel(fdf, a.x, a.y, calculate_gradient_color(i, a.color, &*RGBA_steps));
+		if(p >= 0)
 		{
-			mlx_put_pixel(fdf, x, y, 0xFF0000FF);
-			p = p + 2 * distancey;
+			a.y--;
+			p = p + 2 * dy - 2 * dx;
 		}
-	x = x + 1;
+		else
+			p = p + 2 * dy;
+	a.x++;
+	i++;
+	}
+}
+
+void draw_line_B_up(point_t a, point_t b, mlx_image_t *fdf)
+{
+	int	dx;
+	int	dy;
+	int	p;
+	int	i;
+	float RGBA_steps[4];
+
+	dx = a.x - b.x;
+	dy = b.y - a.y;
+
+	p = 2 * dy - dx;
+	i = 0;
+	ft_printf("distance fdown or gradient : %i\n", dx);
+
+	calculate_gradient_steps(dx, a.color, b.color, &*RGBA_steps);
+	while(b.x < a.x)
+	{
+		mlx_put_pixel(fdf, a.x, a.y, calculate_gradient_color(i, a.color, &*RGBA_steps));
+		if(p >= 0)
+		{
+			a.y--;
+			p = p + 2 * dy - 2 * dx;
+		}
+		else
+			p = p + 2 * dy;
+	a.x--;
+	i++;
+	}
+}
+
+void draw_line_B_down(point_t a, point_t b, mlx_image_t *fdf)
+{
+	int	dx;
+	int	dy;
+	int	p;
+	int	i;
+	float RGBA_steps[4];
+
+	dx = a.x - b.x;
+	dy = b.y - a.y;
+
+	p = 2 * dy - dx;
+	i = 0;
+	ft_printf("distance fdown or gradient : %i\n", dx);
+
+	calculate_gradient_steps(dx, a.color, b.color, &*RGBA_steps);
+	while(b.x < a.x)
+	{
+		mlx_put_pixel(fdf, a.x, a.y, calculate_gradient_color(i, a.color, &*RGBA_steps));
+		if(p >= 0)
+		{
+			a.y++;
+			p = p + 2 * dy - 2 * dx;
+		}
+		else
+			p = p + 2 * dy;
+	a.x--;
+	i++;
+	}
+}
+
+void draw_line(point_t point_a, point_t point_b, mlx_image_t *fdf)
+{
+	if (point_b.x >= point_a.x)
+	{
+		if (point_b.y >= point_a.y)
+			draw_line_F_down(point_a, point_b, fdf);
+		else
+			draw_line_F_up(point_a, point_b, fdf);
+	}
+	else
+	{
+		if (point_b.y >= point_a.y)
+			draw_line_B_down(point_a, point_b, fdf);
+		else
+			draw_line_B_up(point_a, point_b, fdf);
 	}
 }
 
@@ -150,7 +278,7 @@ int32_t	main (int argc, char *argv[])
 	mlx_t*			mlx;
 	mlx_image_t*	bckgnd;
 	mlx_image_t*	fdf;
-	t_map			map = {0, 0, 0};
+	map_t			map = {0, 0, 0};
 
 
 	if (argc != 2)
@@ -170,9 +298,41 @@ int32_t	main (int argc, char *argv[])
 	ft_memset(bckgnd->pixels, 50, bckgnd->width * bckgnd->height * sizeof(int32_t));
 	mlx_image_to_window(mlx, bckgnd, 0, 0);
 
-	draw_line(50, 50, 489, 364, fdf);
-	draw_line(60, 50, 489, 564, fdf);
-	//draw_map(map, fdf);
+	point_t point_a;
+	point_t point_b;
+
+	point_a.x = 300;
+	point_a.y = 300;
+	point_a.color = 0xFF0000FF;
+	point_b.x = 700;
+	point_b.y = 500;
+	point_b.color = 0xFFFFFFFF;
+	draw_line(point_a, point_b, fdf);
+
+	point_a.x = 300;
+	point_a.y = 300;
+	point_a.color = 0x00FF00FF;
+	point_b.x = 500;
+	point_b.y = 200;
+	point_b.color = 0xFFFFFFFF;
+	draw_line(point_a, point_b, fdf);
+
+	point_a.x = 300;
+	point_a.y = 300;
+	point_a.color = 0x0000FFFF;
+	point_b.x = 50;
+	point_b.y = 100;
+	point_b.color = 0xFFFFFFFF;
+	draw_line(point_a, point_b, fdf);
+
+	point_a.x = 300;
+	point_a.y = 300;
+	point_a.color = 0xFFFF00FF;
+	point_b.x = 50;
+	point_b.y = 600;
+	point_b.color = 0xFFFFFFFF;
+	draw_line(point_a, point_b, fdf);
+
 	mlx_image_to_window(mlx, fdf, 0, 0);
 
 	text_info(mlx, argv[1], &map);
@@ -184,9 +344,14 @@ int32_t	main (int argc, char *argv[])
 }
 
 
-// draw a line
+// gradient color line :)
+// line in all directions :)
 
-// struct map 
+// read colors 
+// draw full map 
+// understand bresenham
+
+// projectio 2d 3d
 
 // Perror and sterror
 
