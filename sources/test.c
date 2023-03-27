@@ -119,20 +119,30 @@ void draw_line(int x0, int y0, int x1, int y1, mlx_image_t	*fdf)
 {
 	int	distancex;
 	int	distancey;
-	int	fastdirection;
-	float	fault;
+	int	x;
+	int	y;
+	int	p;
 
 	distancex = x1 - x0;
 	distancey = y1 - y0;
+	x = x0;
+	y = y0;
 
-	if (distancex > distancey)
-		fastdirection = distancex;
-	else
-		fastdirection = distancey;
-
-	fault = fastdirection / 2;
-	mlx_put_pixel(fdf, x0, y0, 0xFF0000FF);
-
+	while(x < x1)
+	{
+		if(p >= 0)
+		{
+			mlx_put_pixel(fdf, x, y, 0xFF0000FF);
+			y = y + 1;
+			p = p + 2 * distancey - 2 * distancex;
+		}
+		else
+		{
+			mlx_put_pixel(fdf, x, y, 0xFF0000FF);
+			p = p + 2 * distancey;
+		}
+	x = x + 1;
+	}
 }
 
 int32_t	main (int argc, char *argv[])
@@ -160,7 +170,9 @@ int32_t	main (int argc, char *argv[])
 	ft_memset(bckgnd->pixels, 50, bckgnd->width * bckgnd->height * sizeof(int32_t));
 	mlx_image_to_window(mlx, bckgnd, 0, 0);
 
-	draw_line(50, 50, 89, 64, fdf);
+	draw_line(50, 50, 489, 364, fdf);
+	draw_line(60, 50, 489, 564, fdf);
+	//draw_map(map, fdf);
 	mlx_image_to_window(mlx, fdf, 0, 0);
 
 	text_info(mlx, argv[1], &map);
