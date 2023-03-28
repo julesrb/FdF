@@ -18,6 +18,50 @@ int count_split(char **split)
 	return (c);
 }
 
+uint8_t	ft_atohex (char * str)
+{
+	uint8_t	a;
+	uint8_t b;
+
+	if (str[0] >= '0' && str[0] <= '9')
+		a = str[0] - 48;
+	if (str[0] >= 'a' && str[0] <= 'f')
+		a = str[0] - 87;
+	if (str[0] >= 'A' && str[0] <= 'F')
+		a = str[0] - 55;
+	if (str[1] >= '0' && str[1] <= '9')
+		b = str[1] - 48;
+	if (str[1] >= 'a' && str[1] <= 'f')
+		b = str[1] - 87;
+	if (str[1] >= 'A' && str[1] <= 'F')
+		b = str[1] - 55;
+	return ((a * 16) + b);
+}
+
+int	ft_ahextorgba (char * str)
+{
+	uint8_t	r;
+	uint8_t	g;
+	uint8_t	b;
+	int	i;
+	
+	i = 0;
+	r = 0;
+	g = 0;
+	b = 0;
+	while (str[i] != 'x')
+		i++;
+	i++;
+	r = ft_atohex(&str[i]);
+	if (str[i + 2] != '\0')
+	{
+		g = ft_atohex(&str[i + 2]);
+		if (str[i + 4] != '\0')
+			b = ft_atohex(&str[i + 4]);
+	}
+	return (r << 24 | g << 16 | b << 8 | 0xFF);
+}
+
 void	line_to_map_data(intersection_t **coordinate, char *line, size_t col, size_t row)
 {
 	char	**split;
@@ -30,7 +74,10 @@ void	line_to_map_data(intersection_t **coordinate, char *line, size_t col, size_
 		ft_printf("-%i",ft_atoi(split[i]));
 		coordinate[row][i].height = ft_atoi(split[i]);
 		if (ft_strchr(split[i], ','))
-			coordinate[row][i].color = 0xff;
+			coordinate[row][i].color = ft_ahextorgba(split[i]);
+		else
+			coordinate[row][i].color = 0xFFFFFFFF;
+		ft_printf("-%x", coordinate[row][i].color);
 		i++;
 	}
 	// THink about implementing the colors management.
@@ -146,19 +193,40 @@ void draw_line_F_down(point_t a, point_t b, mlx_image_t *fdf)
 	i = 0;
 	ft_printf("distance fdown or gradient : %i\n", dx);
 
-	calculate_gradient_steps(dx, a.color, b.color, &*RGBA_steps);
-	while(a.x < b.x)
+	if (dy < dx)
 	{
-		mlx_put_pixel(fdf, a.x, a.y, calculate_gradient_color(i, a.color, &*RGBA_steps));
-		if(p >= 0)
+	calculate_gradient_steps(dx, a.color, b.color, &*RGBA_steps);
+		while(a.x < b.x)
 		{
-			a.y++;
-			p = p + 2 * dy - 2 * dx;
+			mlx_put_pixel(fdf, a.x, a.y, calculate_gradient_color(i, a.color, &*RGBA_steps));
+			if(p >= 0)
+			{
+				a.y++;
+				p = p + 2 * dy - 2 * dx;
+			}
+			else
+				p = p + 2 * dy;
+		a.x++;
+		i++;
 		}
-		else
-			p = p + 2 * dy;
-	a.x++;
-	i++;
+	}
+	else
+	{
+		ft_printf("*");
+		calculate_gradient_steps(dy, a.color, b.color, &*RGBA_steps);
+		while(a.y < b.y)
+		{
+			mlx_put_pixel(fdf, a.x, a.y, calculate_gradient_color(i, a.color, &*RGBA_steps));
+			if(p >= 0)
+			{
+				a.x++;
+				p = p + 2 * dx - 2 * dy;
+			}
+			else
+				p = p + 2 * dx;
+		a.y++;
+		i++;
+		}
 	}
 }
 
@@ -257,19 +325,76 @@ void draw_line_B_down(point_t a, point_t b, mlx_image_t *fdf)
 
 void draw_line(point_t point_a, point_t point_b, mlx_image_t *fdf)
 {
-	if (point_b.x >= point_a.x)
-	{
-		if (point_b.y >= point_a.y)
-			draw_line_F_down(point_a, point_b, fdf);
+		if (point_b.x >= point_a.x)
+		{
+			if (point_b.y >= point_a.y)
+				draw_line_F_down(point_a, point_b, fdf);
+			else
+				draw_line_F_up(point_a, point_b, fdf);
+		}
 		else
-			draw_line_F_up(point_a, point_b, fdf);
+		{
+			if (point_b.y >= point_a.y)
+				draw_line_B_down(point_a, point_b, fdf);
+			else
+				draw_line_B_up(point_a, point_b, fdf);
+		}
+}
+
+void	draw_map(map_t map, mlx_image_t* fdf)
+{
+	size_t	c;
+	size_t	r;
+	point_t point_a;
+	point_t point_b;
+	int space = 30;
+
+	c = 0;
+	r = 0;
+	point_b.x = 100;
+	point_b.y = 100;
+	point_b.color = map.coordinate[r][c].color;
+	while (map.row > r + 0)
+	{
+		while (map.col > c + 1)
+		{
+			point_a.x = point_b.x;
+			point_a.y = point_b.y;
+			point_a.color = point_b.color;
+			point_b.x = point_a.x + space*1;
+			point_b.y = point_a.y;
+			point_b.color = map.coordinate[r][c + 1].color;
+			draw_line(point_a, point_b, fdf);
+			c++;
+		}
+		point_b.x = 100;
+		point_b.y = point_a.y + space*1;
+		c = 0;
+		r++;
 	}
-	else
+	c = 0;
+	r = 0;
+	point_b.x = 100;
+	point_b.y = 100;
+	point_b.color = map.coordinate[r][c].color;
+
+	while (map.col > c + 0)
 	{
-		if (point_b.y >= point_a.y)
-			draw_line_B_down(point_a, point_b, fdf);
-		else
-			draw_line_B_up(point_a, point_b, fdf);
+		while (map.row > r + 1)
+			{
+				point_a.x = point_b.x;
+				point_a.y = point_b.y;
+				point_a.color = point_b.color;
+				point_b.x = point_a.x;
+				point_b.y = point_a.y + space*1;
+				point_b.color = map.coordinate[r + 1][c].color;
+				draw_line(point_a, point_b, fdf);
+				r++;
+			}
+		point_b.x = point_a.x + space*1;
+		point_b.y = 100;
+		r = 0;
+		c++;
 	}
 }
 
@@ -332,6 +457,16 @@ int32_t	main (int argc, char *argv[])
 	point_b.y = 600;
 	point_b.color = 0xFFFFFFFF;
 	draw_line(point_a, point_b, fdf);
+
+	point_a.x = 600;
+	point_a.y = 300;
+	point_a.color = 0xFFFF00FF;
+	point_b.x = 600;
+	point_b.y = 700;
+	point_b.color = 0xFFFFFFFF;
+	draw_line(point_a, point_b, fdf);
+
+	draw_map(map, fdf);
 
 	mlx_image_to_window(mlx, fdf, 0, 0);
 
