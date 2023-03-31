@@ -41,7 +41,8 @@ INCS = -I $(INC_DIREC) -I $(LIBFT_DIR)includes/ -I $(LIBMLX_DIR)include/MLX42/
 LIBS = $(LIBMLX_DIR)/build/libmlx42.a -lglfw -L"/opt/homebrew/Cellar/glfw/3.3.8/lib/" \
 		$(LIBFT_DIR)libft.a
 
-SRC_FILES = test
+SRC_FILES = test \
+			draw
 
 SRCS = $(addprefix $(SRC_DIREC), $(addsuffix .c, $(SRC_FILES)))
 OBJS = $(addprefix $(OBJ_DIREC), $(addsuffix .o, $(SRC_FILES)))

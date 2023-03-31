@@ -37,4 +37,7 @@ typedef struct point
 	int	color;
 }	point_t;
 
+void	draw_map(map_t map, mlx_image_t* fdf);
+void draw_line(point_t point_a, point_t point_b, mlx_image_t *fdf);
+
 #endif
