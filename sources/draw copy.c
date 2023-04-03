@@ -178,16 +178,7 @@ void draw_line_B_down(point_t a, point_t b, mlx_image_t *fdf)
 
 void draw_line(point_t point_a, point_t point_b, mlx_image_t *fdf)
 {
-	int	dx;
-	int sx;
-	int dy;
-	int	sy;
-	int	
-
-
-
-
-/* 		if (point_b.x >= point_a.x)
+		if (point_b.x >= point_a.x)
 		{
 			if (point_b.y >= point_a.y)
 				draw_line_F_down(point_a, point_b, fdf);
@@ -200,7 +191,7 @@ void draw_line(point_t point_a, point_t point_b, mlx_image_t *fdf)
 				draw_line_B_down(point_a, point_b, fdf);
 			else
 				draw_line_B_up(point_a, point_b, fdf);
-		} */
+		}
 }
 
 

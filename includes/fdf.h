@@ -15,6 +15,7 @@
 
 # include "libft.h"
 # include "MLX42.h"
+# include <stdlib.h>
 
 
 typedef struct intersection
