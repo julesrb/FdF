@@ -193,52 +193,58 @@ int32_t	main (int argc, char *argv[])
 	point_a.x = 300;
 	point_a.y = 300;
 	point_a.color = 0xFF0000FF;
-	point_b.x = 700;
-	point_b.y = 500;
+	point_b.x = 300;
+	point_b.y = 600;
 	point_b.color = 0xFFFFFFFF;
 	draw_line(point_a, point_b, fdf);
+		point_a.x = 300;
+		point_a.y = 300;
+		point_a.color = 0xFF0000FF;
+		point_b.x = 302;
+		point_b.y = 600;
+		point_b.color = 0xFFFFFFFF;
+		draw_line(point_a, point_b, fdf);
 
 	point_a.x = 300;
 	point_a.y = 300;
 	point_a.color = 0x00FF00FF;
-	point_b.x = 500;
-	point_b.y = 200;
+	point_b.x = 600;
+	point_b.y = 600;
 	point_b.color = 0xFFFFFFFF;
 	draw_line(point_a, point_b, fdf);
 
 	point_a.x = 300;
 	point_a.y = 300;
 	point_a.color = 0x0000FFFF;
-	point_b.x = 50;
-	point_b.y = 100;
+	point_b.x = 600;
+	point_b.y = 300;
+	point_b.color = 0xFFFFFFFF;
+	draw_line(point_a, point_b, fdf);
+		point_a.x = 300;
+		point_a.y = 300;
+		point_a.color = 0x0000FFFF;
+		point_b.x = 600;
+		point_b.y = 302;
+		point_b.color = 0xFFFFFFFF;
+		draw_line(point_a, point_b, fdf);
+
+	point_a.x = 300;
+	point_a.y = 300;
+	point_a.color = 0x0000FFFF;
+	point_b.x = 600;
+	point_b.y = 200;
 	point_b.color = 0xFFFFFFFF;
 	draw_line(point_a, point_b, fdf);
 
 	point_a.x = 300;
 	point_a.y = 300;
-	point_a.color = 0xFFFF00FF;
-	point_b.x = 50;
-	point_b.y = 600;
-	point_b.color = 0xFFFFFFFF;
-	draw_line(point_a, point_b, fdf);
-
-	point_a.x = 600;
-	point_a.y = 300;
-	point_a.color = 0xFFFF00FF;
-	point_b.x = 600;
-	point_b.y = 700;
+	point_a.color = 0xFF00FFFF;
+	point_b.x = 500;
+	point_b.y = 100;
 	point_b.color = 0xFFFFFFFF;
 	draw_line(point_a, point_b, fdf);
 
 	draw_map(map, fdf);
-
-	point_a.x = 700;
-	point_a.y = 700;
-	point_a.color = 0xFFFF00FF;
-	point_b.x = 700;
-	point_b.y = 710;
-	point_b.color = 0xFFFFFFFF;
-	draw_line(point_a, point_b, fdf);
 
 	mlx_image_to_window(mlx, fdf, 0, 0);
 
