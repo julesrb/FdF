@@ -71,13 +71,13 @@ void	line_to_map_data(intersection_t **coordinate, char *line, size_t col, size_
 	split = ft_split(line, ' ');
 	while (i < col)
 	{
-		ft_printf("-%i",ft_atoi(split[i]));
+		//ft_printf("-%i",ft_atoi(split[i]));
 		coordinate[row][i].height = ft_atoi(split[i]);
 		if (ft_strchr(split[i], ','))
 			coordinate[row][i].color = ft_ahextorgba(split[i]);
 		else
 			coordinate[row][i].color = 0xFFFFFFFF;
-		ft_printf("-%x", coordinate[row][i].color);
+		//ft_printf("-%x", coordinate[row][i].color);
 		i++;
 	}
 	// THink about implementing the colors management.
@@ -160,34 +160,114 @@ void	text_info(mlx_t *mlx, char *argv, map_t *map)
 	mlx_put_string(mlx, ft_itoa(map->col), 100, 50);
 	mlx_put_string(mlx, "LENGHT", 20, 75);
 	mlx_put_string(mlx, ft_itoa(map->row), 100, 75);
+
+	mlx_put_string(mlx, "CONTROL", 20, 600);
+	mlx_put_string(mlx, "Zoom in:  I", 20, 625);
+	mlx_put_string(mlx, "Zoom out: O", 20, 650);
+}
+
+void my_keyhook(mlx_key_data_t keydata, void* param)
+{
+	fdf_t	*fdf;
+	fdf = (fdf_t*)param;
+
+	if (keydata.key == MLX_KEY_I && keydata.action == MLX_PRESS)
+	{
+		ft_printf("zoom In\n");
+		fdf->zoom = fdf->zoom * 1.05;
+		
+	}
+	if (keydata.key == MLX_KEY_O && keydata.action == MLX_PRESS)
+	{
+		ft_printf("zoom Out\n");
+		fdf->zoom = fdf->zoom * 0.95;
+
+		
+	}
+	if (keydata.key == MLX_KEY_1 && keydata.action == MLX_PRESS)
+	{
+		ft_printf("Top view\n");
+		fdf->top = 1;
+		fdf->iso = 0;
+		
+	}
+	if (keydata.key == MLX_KEY_2 && keydata.action == MLX_PRESS)
+	{
+		ft_printf("Iso view\n");
+		fdf->iso = 1;
+		fdf->top = 0;
+	}
+	draw_map(fdf);
+	(void)param;
+}
+
+fdf_t	*fdf_init(char* name)
+{
+	fdf_t			*fdf;
+	fdf = ft_calloc(1, sizeof(fdf_t));
+	fdf->name = ft_strdup(name);
+	fdf->map = ft_calloc(1, sizeof(map_t));
+
+	fdf->top = 1;
+	fdf->zoom = 1;
+
+	fdf->mlx = mlx_init(WIDTH, HEIGHT, "FDF", false);
+	// include mlx errno and exit and resizing.
+
+	fdf->img_bck = mlx_new_image(fdf->mlx, WIDTH, HEIGHT);
+	fdf->img_fdf = mlx_new_image(fdf->mlx, WIDTH, HEIGHT);
+	// include mlx errno and exit 
+
+	return (fdf);
 }
 
 int32_t	main (int argc, char *argv[])
 {
-	mlx_t*			mlx;
-	mlx_image_t*	bckgnd;
-	mlx_image_t*	fdf;
-	map_t			map = {0, 0, 0};
+	fdf_t			*fdf;
+	//mlx_image_t*	bckgnd;
+	//mlx_image_t*	fdf;
+	//fdf.env = {0, 1, 0, 1};
 
 
 	if (argc != 2)
 		return (ft_printf("!! Incorrect number of arguments !!"));
 	if (ft_strnstr(argv[1], ".fdf", ft_strlen(argv[1])) == 0)
 		return (ft_printf("!! Wrong extension !!"));
-	if (parse_map(argv[1], &map) == -1)
+
+	fdf = fdf_init(argv[1]);
+	if (parse_map(argv[1], fdf->map) == -1)
 		return (0);
 
-	mlx = mlx_init(WIDTH, HEIGHT, "FDF", false);
-	// include mlx errno and exit and resizing.
-	bckgnd = mlx_new_image(mlx, WIDTH, HEIGHT);
-	fdf = mlx_new_image(mlx, WIDTH, HEIGHT);
-	// include mlx errno and exit 
+
 
 	//setting the background color
-	ft_memset(bckgnd->pixels, 50, bckgnd->width * bckgnd->height * sizeof(int32_t));
-	mlx_image_to_window(mlx, bckgnd, 0, 0);
+	ft_memset(fdf->img_bck->pixels, 50, fdf->img_bck->width * fdf->img_bck->height * sizeof(int32_t));
+	mlx_image_to_window(fdf->mlx, fdf->img_bck, 0, 0);
 
-	point_t point_a;
+	draw_map(fdf);
+
+
+
+	//text_info(fdf.mlx, argv[1], &fdf.map);
+	mlx_key_hook(fdf->mlx, &my_keyhook, &fdf);
+	mlx_loop(fdf->mlx);
+	// do i need mlx_delete_image ?
+	mlx_terminate(fdf->mlx);
+	return (EXIT_SUCCESS);
+}
+
+// Center the 2d map
+// How to handle the value that are outside of reach 2d
+// center the iso map 
+
+// Perror and sterror
+
+// draw the parameter on screen.
+
+
+/* https://github.com/sungwoo-shin/ecole42-42cursus/tree/main/02-FdF */
+
+/* 	point_t point_a;
 	point_t point_b;
 
 	point_a.x = 300;
@@ -242,36 +322,4 @@ int32_t	main (int argc, char *argv[])
 	point_b.x = 500;
 	point_b.y = 100;
 	point_b.color = 0xFFFFFFFF;
-	draw_line(point_a, point_b, fdf);
-
-	draw_map(map, fdf);
-
-	mlx_image_to_window(mlx, fdf, 0, 0);
-
-	text_info(mlx, argv[1], &map);
-
-	mlx_loop(mlx);
-	// do i need mlx_delete_image ?
-	mlx_terminate(mlx);
-	return (EXIT_SUCCESS);
-}
-
-
-// gradient color line :)
-// line in all directions :)
-
-// read colors 
-// draw full map 
-// understand bresenham
-
-// projectio 2d 3d
-
-// Perror and sterror
-
-// draw the parameter on screen.
-
-// deal with colors. do i need my atohex ?
-
-
-
-/* https://github.com/sungwoo-shin/ecole42-42cursus/tree/main/02-FdF */
+	draw_line(point_a, point_b, fdf); */
