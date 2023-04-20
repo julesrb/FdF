@@ -189,7 +189,6 @@ void my_keyhook(mlx_key_data_t keydata, void* param)
 		ft_printf("Top view\n");
 		fdf->top = 1;
 		fdf->iso = 0;
-		draw_map(fdf);
 		
 	}
 	if (keydata.key == MLX_KEY_2 && keydata.action == MLX_PRESS)
@@ -198,6 +197,7 @@ void my_keyhook(mlx_key_data_t keydata, void* param)
 		fdf->iso = 1;
 		fdf->top = 0;
 	}
+	draw_map(fdf);
 	(void)param;
 }
 
@@ -209,7 +209,7 @@ fdf_t	*fdf_init(char* name)
 	fdf->map = ft_calloc(1, sizeof(map_t));
 
 	fdf->iso = 1;
-	fdf->zoom = 3;
+	fdf->zoom = 1;
 
 	fdf->mlx = mlx_init(WIDTH, HEIGHT, "FDF", false);
 	// include mlx errno and exit and resizing.
@@ -238,8 +238,6 @@ int32_t	main (int argc, char *argv[])
 	if (parse_map(argv[1], fdf->map) == -1)
 		return (0);
 
-	ft_printf("zoom = %i\n",fdf->zoom);
-	ft_printf("iso = %i\n",fdf->iso);
 
 
 	//setting the background color

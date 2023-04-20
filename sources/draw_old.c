@@ -172,28 +172,28 @@ void	draw_line(point_t point_a, point_t point_b, mlx_image_t *fdf)
 	}
 }
 
-point_t	point_project(int x, int y, int z, fdf_t *fdf)
+point_t	point_project(int x, int y, int z, fdf_t fdf)
 {
 	point_t rtn;
 
 	//env.zoom = 1;
 
-	if (fdf->top == 1)
+	if (fdf.top == 1)
 	{
-	rtn.x = 10 + x * fdf->zoom;
-	rtn.y = 10 + y * fdf->zoom;
+	rtn.x = 10 + x * fdf.zoom;
+	rtn.y = 10 + y * fdf.zoom;
 	rtn.z = z;
-	fdf->iso = 0;
+	fdf.iso = 0;
 	}
 
 	// ISO top view
-	if (fdf->iso == 1)
+	if (fdf.iso == 1)
 	{
-	rtn.x = 100 + x * fdf->zoom + y * fdf->zoom;
-	rtn.y = 400 + y * fdf->zoom/2 - x  * fdf->zoom/2 - z * fdf->zoom/2;
+	rtn.x = 100 + x * fdf.zoom + y * fdf.zoom;
+	rtn.y = 400 + y * fdf.zoom/2 - x  * fdf.zoom/2 - z * fdf.zoom/2;
 	//ft_printf("ISO ON%i\n", rtn.y);
 	rtn.z = z;
-	fdf->top = 0;
+	fdf.top = 0;
 	}
 	return (rtn);
 }
@@ -214,17 +214,17 @@ void	draw_map(fdf_t* fdf)
 		x = 0;
 		while (x < fdf->map->col)
 		{
-			point_a = point_project(x, y, fdf->map->coordinate[y][x].height, fdf);
+			point_a = point_project(x, y, fdf->map->coordinate[y][x].height, *fdf);
 			point_a.color = fdf->map->coordinate[y][x].color;
 			if (x < fdf->map->col - 1)
 			{
-				point_b = point_project(x + 1, y, fdf->map->coordinate[y][x + 1].height, fdf);
+				point_b = point_project(x + 1, y, fdf->map->coordinate[y][x + 1].height, *fdf);
 				point_b.color = fdf->map->coordinate[y][x + 1].color;
 				draw_line(point_a, point_b, fdf->img_fdf);
 			}
 			if (y < fdf->map->row - 1)
 			{
-				point_b = point_project(x, y + 1, fdf->map->coordinate[y + 1][x].height, fdf);
+				point_b = point_project(x, y + 1, fdf->map->coordinate[y + 1][x].height, *fdf);
 				point_b.color = fdf->map->coordinate[y + 1][x].color;
 				draw_line(point_a, point_b, fdf->img_fdf);
 			}
