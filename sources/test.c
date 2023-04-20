@@ -144,7 +144,6 @@ int parse_map(char *file_name, map_t* map)
 	{	
 		line = get_next_line(fd);
 		line_to_map_data(map->coordinate, line, map->col, i);
-		ft_printf("\n");
 		i++;
 	}
 	close(fd);
@@ -189,7 +188,6 @@ void my_keyhook(mlx_key_data_t keydata, void* param)
 		ft_printf("Top view\n");
 		fdf->top = 1;
 		fdf->iso = 0;
-		draw_map(fdf);
 		
 	}
 	if (keydata.key == MLX_KEY_2 && keydata.action == MLX_PRESS)
@@ -198,6 +196,7 @@ void my_keyhook(mlx_key_data_t keydata, void* param)
 		fdf->iso = 1;
 		fdf->top = 0;
 	}
+			draw_map(fdf);
 	(void)param;
 }
 
@@ -239,7 +238,7 @@ int32_t	main (int argc, char *argv[])
 		return (0);
 
 	ft_printf("zoom = %i\n",fdf->zoom);
-	ft_printf("iso = %i\n",fdf->iso);
+	ft_printf("iso = %f",fdf->iso);
 
 
 	//setting the background color
@@ -251,7 +250,7 @@ int32_t	main (int argc, char *argv[])
 
 
 	//text_info(fdf.mlx, argv[1], &fdf.map);
-	mlx_key_hook(fdf->mlx, &my_keyhook, &fdf);
+	mlx_key_hook(fdf->mlx, &my_keyhook, fdf);
 	mlx_loop(fdf->mlx);
 	// do i need mlx_delete_image ?
 	mlx_terminate(fdf->mlx);

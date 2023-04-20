@@ -178,11 +178,13 @@ point_t	point_project(int x, int y, int z, fdf_t *fdf)
 
 	//env.zoom = 1;
 
+
 	if (fdf->top == 1)
 	{
 	rtn.x = 10 + x * fdf->zoom;
 	rtn.y = 10 + y * fdf->zoom;
 	rtn.z = z;
+	//ft_printf("%i %i %i\n", rtn.x, rtn.y, rtn.z);
 	fdf->iso = 0;
 	}
 
@@ -193,6 +195,7 @@ point_t	point_project(int x, int y, int z, fdf_t *fdf)
 	rtn.y = 400 + y * fdf->zoom/2 - x  * fdf->zoom/2 - z * fdf->zoom/2;
 	//ft_printf("ISO ON%i\n", rtn.y);
 	rtn.z = z;
+		//ft_printf("%i %i %i\n", rtn.x, rtn.y, rtn.z);
 	fdf->top = 0;
 	}
 	return (rtn);
@@ -205,10 +208,12 @@ void	draw_map(fdf_t* fdf)
 	point_t	point_a;
 	point_t	point_b;
 
-	ft_printf("stop 0\n");
-	//ft_memset(fdf->img_fdf->pixels, 50, fdf->img_fdf->width * fdf->img_fdf->height * sizeof(int32_t));
+	//ft_memset(fdf->img_fdf->pixels, 25, fdf->img_fdf->width * fdf->img_fdf->height * sizeof(int32_t));
 
 	y = 0;
+	//ft_printf("aa\n");
+//	ft_printf("y = %i\n", y);
+	//ft_printf("row = %i\n", fdf->map->row);
 	while (y < fdf->map->row)
 	{
 		x = 0;
@@ -232,11 +237,8 @@ void	draw_map(fdf_t* fdf)
 		}
 		y++;
 	}
-	ft_printf("stop 1\n");
 	mlx_image_to_window(fdf->mlx, fdf->img_fdf, 0, 0);
-		ft_printf("stop 2\n");
 	text_info(fdf->mlx, fdf->name, fdf->map);
-		ft_printf("stop 3\n");
 	//text_info(&mlx, "name.fdf", &map);
 }
 

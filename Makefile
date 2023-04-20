@@ -59,7 +59,7 @@ libft:
 				@$(MAKE) -sC $(LIBFT_DIR)
 
 $(NAME): $(OBJ_DIREC) $(OBJS) 
-				$(CC) - g $(CFLAGS) $(OBJS) $(LIBS) $(INCS) -o $(NAME)
+				$(CC) -g $(CFLAGS) $(OBJS) $(LIBS) $(INCS) -o $(NAME)
 				@echo "- Library $(NAME) created !"
 
 $(OBJ_DIREC)%.o : $(SRC_DIREC)%.c
