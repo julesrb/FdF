@@ -233,7 +233,7 @@ void	draw_map(fdf_t* fdf)
 		y++;
 	}
 	ft_printf("stop 1\n");
-	mlx_image_to_window(&fdf.mlx, fdf->img_fdf, 0, 0);
+	mlx_image_to_window(fdf->mlx, fdf->img_fdf, 0, 0);
 		ft_printf("stop 2\n");
 	text_info(fdf->mlx, fdf->name, fdf->map);
 		ft_printf("stop 3\n");

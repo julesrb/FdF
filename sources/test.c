@@ -208,7 +208,7 @@ fdf_t	*fdf_init(char* name)
 	fdf->name = ft_strdup(name);
 	fdf->map = ft_calloc(1, sizeof(map_t));
 
-	fdf->top = 1;
+	fdf->iso = 1;
 	fdf->zoom = 1;
 
 	fdf->mlx = mlx_init(WIDTH, HEIGHT, "FDF", false);
