@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jubernar <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/01/06 15:55:32 by jubernar          #+#    #+#             */
+/*   Updated: 2023/01/06 15:55:35 by jubernar         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 /* need to inc for open  */
 #include <fcntl.h>
 #include <stdlib.h>
@@ -8,27 +20,24 @@
 #define WIDTH 1080
 #define HEIGHT 720
 
-
 void	text_info(mlx_t *mlx, char *name, map_t *map)
 {
-
 	mlx_put_string(mlx, "NAME", 20, 25);
 	mlx_put_string(mlx, ft_strchr(name, '/'), 100, 25);
 	mlx_put_string(mlx, "WIDTH", 20, 50);
 	mlx_put_string(mlx, ft_itoa(map->col), 100, 50);
 	mlx_put_string(mlx, "LENGHT", 20, 75);
 	mlx_put_string(mlx, ft_itoa(map->row), 100, 75);
-
 	mlx_put_string(mlx, "CONTROL", 20, 600);
 	mlx_put_string(mlx, "Zoom in:  I", 20, 625);
 	mlx_put_string(mlx, "Zoom out: O", 20, 650);
 }
 
-void my_keyhook(mlx_key_data_t keydata, void* param)
+void	my_keyhook(mlx_key_data_t keydata, void *param)
 {
 	fdf_t	*fdf;
-	fdf = (fdf_t*)param;
 
+	fdf = (fdf_t *)param;
 	if (keydata.key == MLX_KEY_I && keydata.action == MLX_PRESS)
 	{
 		fdf->zoom = fdf->zoom * 1.1;
@@ -51,16 +60,15 @@ void my_keyhook(mlx_key_data_t keydata, void* param)
 	(void)param;
 }
 
-fdf_t	*fdf_init(char* name)
+fdf_t	*fdf_init(char *name)
 {
 	fdf_t			*fdf;
+
 	fdf = ft_calloc(1, sizeof(fdf_t));
 	fdf->name = ft_strdup(name);
 	fdf->map = ft_calloc(1, sizeof(map_t));
-
 	fdf->iso = 1;
 	fdf->zoom = 3;
-
 	fdf->mlx = mlx_init(WIDTH, HEIGHT, "FDF", false);
 	// include mlx errno and exit and resizing.
 

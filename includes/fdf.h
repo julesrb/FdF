@@ -25,17 +25,17 @@
 	int		top;
 }	env_t; */
 
-typedef struct intersection
+typedef struct grid
 {
 	int	height;
 	int	color;
-}	intersection_t;
+}	grid_t;
 
 typedef struct map
 {
 	size_t		row;
 	size_t		col;
-	intersection_t **coordinate;
+	grid_t **grid;
 }	map_t;
 
 
@@ -65,5 +65,18 @@ void	draw_map(fdf_t *fdf);
 int		parse_map(char *file_name, map_t* map);
 void	draw_line(point_t point_a, point_t point_b, mlx_image_t *fdf);
 void	text_info(mlx_t *mlx, char *argv, map_t *map);
+
+uint8_t	ft_atohex(char *str);
+int		ft_ahextorgba(char *str);
+void	calc_gradient_steps(int i, int cl_a, int cl_b, float rgba[4]);
+int		calc_gradient_color(int steps, int cl_a, float rgba[4]);
+
+void	draw_line_down(point_t a, point_t b, mlx_image_t *fdf);
+void	draw_line_down_y_long(point_t a, point_t b, int *dist, mlx_image_t *fdf);
+void	draw_line_down_x_long(point_t a, point_t b, int *dist, mlx_image_t *fdf);
+
+void	draw_line_up_x_long(point_t a, point_t b, int *dist, mlx_image_t *fdf);
+void	draw_line_up_y_long(point_t a, point_t b, int *dist, mlx_image_t *fdf);
+void	draw_line_up(point_t a, point_t b, mlx_image_t *fdf);
 
 #endif
