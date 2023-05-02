@@ -13,7 +13,7 @@
 /* need to inc for open  */
 #include "fdf.h"
 
-void	calc_gradient_steps(int i, int cl_a, int cl_b, float rgba[4])
+void	calc_grad_steps(int i, int cl_a, int cl_b, float rgba[4])
 {
 	rgba[0] = (float)((uint8_t)(cl_b >> 24) - (uint8_t)(cl_a >> 24)) / (float)i;
 	rgba[1] = (float)((uint8_t)(cl_b >> 16) - (uint8_t)(cl_a >> 16)) / (float)i;
@@ -21,7 +21,7 @@ void	calc_gradient_steps(int i, int cl_a, int cl_b, float rgba[4])
 	rgba[3] = (float)((uint8_t)(cl_b) - (uint8_t)(cl_a)) / (float)i;
 }
 
-int	calc_gradient_color(int steps, int cl_a, float rgba[4])
+int	calc_grad_color(int steps, int cl_a, float rgba[4])
 {
 	return (((int)((uint8_t)(cl_a >> 24) + steps * rgba[0]) & 0xFF) << 24 |
 			((int)((uint8_t)(cl_a >> 16) + steps * rgba[1]) & 0xFF) << 16 |

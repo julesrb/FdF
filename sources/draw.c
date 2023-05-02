@@ -36,23 +36,34 @@ point_t	point_project(int x, int y, int z, fdf_t *fdf)
 
 	if (fdf->top == 1)
 	{
-		rtn.x = 10 + x * fdf->zoom;
-		rtn.y = 10 + y * fdf->zoom;
+		rtn.x = x * fdf->zoom;
+		rtn.y = y * fdf->zoom;
 		rtn.z = z;
 		//ft_printf("%i %i %i\n", rtn.x, rtn.y, rtn.z);
 		fdf->iso = 0;
+
+	rtn.x = rtn.x + WIDTH / 2 - fdf->map->col / 2 * fdf->zoom;
+	rtn.y = rtn.y + HEIGHT / 2 - fdf->map->row / 2 * fdf->zoom;
 	}
 
 	// ISO top view
 	if (fdf->iso == 1)
 	{
-		rtn.x = 100 + x * fdf->zoom + y * fdf->zoom;
-		rtn.y = 400 + y * fdf->zoom / 2 - x * fdf->zoom / 2 - z * fdf->zoom / 2;
+		rtn.x = x * fdf->zoom + y * fdf->zoom;
+		rtn.y = y * fdf->zoom / 2 - x * fdf->zoom / 2 - z * fdf->zoom / 2;
 		//ft_printf("ISO ON%i\n", rtn.y);
 		rtn.z = z;
 			//ft_printf("%i %i %i\n", rtn.x, rtn.y, rtn.z);
 		fdf->top = 0;
+
+	rtn.x = rtn.x + WIDTH / 2;
+	rtn.y = rtn.y + HEIGHT / 2;
 	}
+
+	// CENTER
+
+
+
 	return (rtn);
 }
 

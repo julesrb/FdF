@@ -17,8 +17,7 @@
 #include <unistd.h>
 
 #include "fdf.h"
-#define WIDTH 1080
-#define HEIGHT 720
+
 
 void	text_info(mlx_t *mlx, char *name, map_t *map)
 {

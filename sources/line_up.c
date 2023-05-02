@@ -12,6 +12,7 @@
 
 #include "fdf.h"
 
+
 void	draw_line_up_x_long(point_t a, point_t b, int *dist, mlx_image_t *fdf)
 {
 	float	f;
@@ -20,10 +21,11 @@ void	draw_line_up_x_long(point_t a, point_t b, int *dist, mlx_image_t *fdf)
 
 	i = 0;
 	f = dist[0] / 2;
-	calc_gradient_steps(dist[0], a.color, b.color, &*rgba);
+	calc_grad_steps(dist[0], a.color, b.color, &*rgba);
 	while (a.x < b.x)
 	{
-		mlx_put_pixel(fdf, a.x, a.y, calc_gradient_color(i, a.color, &*rgba));
+		if (a.x >= 0 && a.y >= 0 && a.x < WIDTH && a.y <= HEIGHT)
+			mlx_put_pixel(fdf, a.x, a.y, calc_grad_color(i, a.color, &*rgba));
 		f = f - dist[1];
 		if (f < 0)
 		{
@@ -43,10 +45,11 @@ void	draw_line_up_y_long(point_t a, point_t b, int *dist, mlx_image_t *fdf)
 
 	i = 0;
 	f = dist[1] / 2;
-	calc_gradient_steps(dist[1], a.color, b.color, &*rgba);
+	calc_grad_steps(dist[1], a.color, b.color, &*rgba);
 	while (b.y < a.y)
 	{
-		mlx_put_pixel(fdf, a.x, a.y, calc_gradient_color(i, a.color, &*rgba));
+		if (a.x >= 0 && a.y >= 0 && a.x < WIDTH && a.y <= HEIGHT)
+			mlx_put_pixel(fdf, a.x, a.y, calc_grad_color(i, a.color, &*rgba));
 		f = f - dist[0];
 		if (f < 0)
 		{
