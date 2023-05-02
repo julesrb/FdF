@@ -176,9 +176,6 @@ point_t	point_project(int x, int y, int z, fdf_t *fdf)
 {
 	point_t rtn;
 
-	//env.zoom = 1;
-
-
 	if (fdf->top == 1)
 	{
 	rtn.x = 10 + x * fdf->zoom;
@@ -208,12 +205,8 @@ void	draw_map(fdf_t* fdf)
 	point_t	point_a;
 	point_t	point_b;
 
-	//ft_memset(fdf->img_fdf->pixels, 25, fdf->img_fdf->width * fdf->img_fdf->height * sizeof(int32_t));
-
+	ft_memset(fdf->img_fdf->pixels, 35, fdf->img_fdf->width * fdf->img_fdf->height * sizeof(int32_t));
 	y = 0;
-	//ft_printf("aa\n");
-//	ft_printf("y = %i\n", y);
-	//ft_printf("row = %i\n", fdf->map->row);
 	while (y < fdf->map->row)
 	{
 		x = 0;
@@ -239,7 +232,6 @@ void	draw_map(fdf_t* fdf)
 	}
 	mlx_image_to_window(fdf->mlx, fdf->img_fdf, 0, 0);
 	text_info(fdf->mlx, fdf->name, fdf->map);
-	//text_info(&mlx, "name.fdf", &map);
 }
 
 /* void	draw_map(map_t map, mlx_image_t* fdf)

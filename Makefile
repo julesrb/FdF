@@ -42,7 +42,8 @@ LIBS = $(LIBMLX_DIR)/build/libmlx42.a -lglfw -L"/opt/homebrew/Cellar/glfw/3.3.8/
 		$(LIBFT_DIR)libft.a
 
 SRC_FILES = test \
-			draw
+			draw \
+			parse
 
 SRCS = $(addprefix $(SRC_DIREC), $(addsuffix .c, $(SRC_FILES)))
 OBJS = $(addprefix $(OBJ_DIREC), $(addsuffix .o, $(SRC_FILES)))

@@ -62,6 +62,7 @@ typedef struct fdf
 
 
 void	draw_map(fdf_t *fdf);
+int		parse_map(char *file_name, map_t* map);
 void	draw_line(point_t point_a, point_t point_b, mlx_image_t *fdf);
 void	text_info(mlx_t *mlx, char *argv, map_t *map);
 
