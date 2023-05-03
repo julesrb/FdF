@@ -46,7 +46,8 @@ SRC_FILES = main \
 			parse \
 			color \
 			line_up \
-			line_down
+			line_down \
+			map_size
 
 SRCS = $(addprefix $(SRC_DIREC), $(addsuffix .c, $(SRC_FILES)))
 OBJS = $(addprefix $(OBJ_DIREC), $(addsuffix .o, $(SRC_FILES)))

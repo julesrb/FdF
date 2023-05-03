@@ -24,12 +24,34 @@ void	text_info(mlx_t *mlx, char *name, map_t *map)
 	mlx_put_string(mlx, "NAME", 20, 25);
 	mlx_put_string(mlx, ft_strchr(name, '/'), 100, 25);
 	mlx_put_string(mlx, "WIDTH", 20, 50);
-	mlx_put_string(mlx, ft_itoa(map->col), 100, 50);
+	mlx_put_string(mlx, map->col_c, 100, 50);
 	mlx_put_string(mlx, "LENGHT", 20, 75);
-	mlx_put_string(mlx, ft_itoa(map->row), 100, 75);
+	mlx_put_string(mlx, map->row_c, 100, 75);
 	mlx_put_string(mlx, "CONTROL", 20, 600);
 	mlx_put_string(mlx, "Zoom in:  I", 20, 625);
 	mlx_put_string(mlx, "Zoom out: O", 20, 650);
+}
+
+int	free_grid(grid_t **grid, fdf_t *fdf)
+{
+	while (fdf->map->col--)
+		free(grid[fdf->map->col]);
+	free(grid);
+	return (0);
+}
+
+void	win_close(void *param)
+{
+	fdf_t	*fdf;
+
+	fdf = (fdf_t *)param;
+	free(fdf->map->col_c);
+	free(fdf->map->row_c);
+	free_grid(fdf->map->grid, fdf);
+	free(fdf->map);
+	free(fdf->name);
+	free(fdf);
+	ft_printf("THE ENNNNNND");
 }
 
 void	my_keyhook(mlx_key_data_t keydata, void *param)
@@ -61,7 +83,7 @@ void	my_keyhook(mlx_key_data_t keydata, void *param)
 
 fdf_t	*fdf_init(char *name)
 {
-	fdf_t			*fdf;
+	fdf_t	*fdf;
 
 	fdf = ft_calloc(1, sizeof(fdf_t));
 	fdf->name = ft_strdup(name);
@@ -99,6 +121,7 @@ int32_t	main (int argc, char *argv[])
 
 	//text_info(fdf.mlx, argv[1], &fdf.map);
 	mlx_key_hook(fdf->mlx, &my_keyhook, fdf);
+	mlx_close_hook(fdf->mlx, &win_close, fdf);
 	mlx_loop(fdf->mlx);
 	// do i need mlx_delete_image ?
 	mlx_terminate(fdf->mlx);

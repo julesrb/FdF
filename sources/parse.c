@@ -10,23 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-/* need to inc for open  */
-#include <fcntl.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <unistd.h>
-
 #include "fdf.h"
-
-int	count_split(char **split)
-{
-	int	c;
-
-	c = 0;
-	while (split[c] != 0)
-		c++;
-	return (c);
-}
 
 void	line_to_map_data(grid_t **grid, char *line, size_t col, size_t row)
 {
@@ -44,50 +28,7 @@ void	line_to_map_data(grid_t **grid, char *line, size_t col, size_t row)
 			grid[row][i].color = 0xFFFFFFFF;
 		i++;
 	}
-}
-
-int	count_map_colums(char *file_name, map_t *map)
-{
-	int		fd;
-	char	**split;
-	char	*line;
-
-	fd = open(file_name, O_RDONLY);
-	if (fd < 0)
-		return (0);
-	line = get_next_line(fd);
-	if (!line)
-		return (0);
-	split = ft_split(line, ' ');
-	map->col = count_split(split);
-	free(line);
-	//free the split
-	ft_printf("\nMap contains %i columns \n", map->col);
-	close(fd);
-	return (0);
-}
-
-int	count_map_row(char *file_name, map_t *map)
-{
-	int		fd;
-	char	*line;
-
-	line = "init";
-	fd = open(file_name, O_RDONLY);
-	if (fd < 0)
-		return (0);
-	while (line)
-	{
-		line = get_next_line(fd);
-		if (!line)
-			break;
-		else
-			map->row++;
-		free(line);
-	}
-	close(fd);
-	ft_printf("Map contains %i rows \n",map->row);
-	return (0);
+	free_split(split);
 }
 
 int	alloc_map(map_t *map)
@@ -138,6 +79,7 @@ int	parse_map(char *file_name, map_t *map)
 	{	
 		line = get_next_line(fd);
 		line_to_map_data(map->grid, line, map->col, i);
+		free(line);
 		i++;
 	}
 	close(fd);

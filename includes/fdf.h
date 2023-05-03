@@ -13,6 +13,9 @@
 #ifndef FDF_H
 # define FDF_H
 
+#include <fcntl.h>
+#include <stdio.h>
+#include <unistd.h>
 # include "libft.h"
 # include "MLX42.h"
 # include <stdlib.h>
@@ -37,7 +40,9 @@ typedef struct grid
 typedef struct map
 {
 	size_t		row;
+	char		*row_c;
 	size_t		col;
+	char		*col_c;
 	grid_t **grid;
 }	map_t;
 
@@ -53,7 +58,6 @@ typedef struct point
 typedef struct fdf
 {
 	char*			name;
-	int				offset;
 	float			zoom;
 	int				iso;
 	int				top;
@@ -82,4 +86,9 @@ void	draw_line_up_x_long(point_t a, point_t b, int *dist, mlx_image_t *fdf);
 void	draw_line_up_y_long(point_t a, point_t b, int *dist, mlx_image_t *fdf);
 void	draw_line_up(point_t a, point_t b, mlx_image_t *fdf);
 
+int		count_split(char **split);
+int		count_map_colums(char *file_name, map_t *map);
+int		count_map_row(char *file_name, map_t *map);
+
+int	free_split(char **split);
 #endif
