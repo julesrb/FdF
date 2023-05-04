@@ -72,13 +72,13 @@ int	count_map_row(char *file_name, map_t *map)
 	{
 		line = get_next_line(fd);
 		if (!line)
-			break;
+			break ;
 		else
 			map->row++;
 		free(line);
 	}
 	close(fd);
-	ft_printf("Map contains %i rows \n",map->row);
+	ft_printf("Map contains %i rows \n", map->row);
 	map->row_c = ft_itoa(map->row);
 	return (0);
 }

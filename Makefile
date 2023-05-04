@@ -47,7 +47,8 @@ SRC_FILES = main \
 			color \
 			line_up \
 			line_down \
-			map_size
+			map_size \
+			keyhook
 
 SRCS = $(addprefix $(SRC_DIREC), $(addsuffix .c, $(SRC_FILES)))
 OBJS = $(addprefix $(OBJ_DIREC), $(addsuffix .o, $(SRC_FILES)))

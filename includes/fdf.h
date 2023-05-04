@@ -61,9 +61,10 @@ typedef struct fdf
 	float			zoom;
 	int				iso;
 	int				top;
+	int				offset_x;
+	int				offset_y;
 	map_t*			map;
-	mlx_image_t*	img_bck;
-	mlx_image_t*	img_fdf;
+	mlx_image_t*	img;
 	mlx_t*			mlx;
 }	fdf_t;
 
@@ -91,4 +92,6 @@ int		count_map_colums(char *file_name, map_t *map);
 int		count_map_row(char *file_name, map_t *map);
 
 int	free_split(char **split);
+
+void	my_keyhook(mlx_key_data_t keydata, void *param);
 #endif

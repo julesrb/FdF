@@ -36,15 +36,15 @@ int	alloc_map(map_t *map)
 	size_t		line;
 
 	line = 0;
-	map->grid = (grid_t**)malloc(map->row * sizeof(grid_t*));
+	map->grid = (grid_t **)malloc(map->row * sizeof(grid_t *));
 	if (!map->grid)
 	{
 		return (0);
 	}
 	while (line < map->row)
 	{
-		map->grid[line] = (grid_t*)malloc(map->col * sizeof(grid_t));
-		if(!map->grid[line])
+		map->grid[line] = (grid_t *)malloc(map->col * sizeof(grid_t));
+		if (!map->grid[line])
 		{
 			while (line-- > 0)
 				free(map->grid[line]);
@@ -63,12 +63,9 @@ int	parse_map(char *file_name, map_t *map)
 	char	*line;
 
 	i = 0;
-
 	count_map_colums(file_name, map);
 	count_map_row(file_name, map);
 	alloc_map(map);
-
-	// NOW I NEED TO DISTRIBUTE THE DATA IN THE @D ARRAY WITH SPLIT
 	fd = open(file_name, O_RDONLY);
 	if (fd < 0)
 	{

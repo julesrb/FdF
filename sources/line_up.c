@@ -12,7 +12,6 @@
 
 #include "fdf.h"
 
-
 void	draw_line_up_x_long(point_t a, point_t b, int *dist, mlx_image_t *fdf)
 {
 	float	f;
