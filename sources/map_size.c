@@ -45,15 +45,16 @@ int	count_map_colums(char *file_name, map_t *map)
 
 	fd = open(file_name, O_RDONLY);
 	if (fd < 0)
-		return (0);
+		terminate("open error");
 	line = get_next_line(fd);
 	if (!line)
-		return (0);
+		terminate("parse alloc error");
 	split = ft_split(line, ' ');
+	if (!split)
+		terminate("parse alloc error");
 	map->col = count_split(split);
 	free(line);
 	free_split(split);
-	ft_printf("\nMap contains %i columns \n", map->col);
 	map->col_c = ft_itoa(map->col);
 	close(fd);
 	return (0);
@@ -67,7 +68,7 @@ int	count_map_row(char *file_name, map_t *map)
 	line = "init";
 	fd = open(file_name, O_RDONLY);
 	if (fd < 0)
-		return (0);
+		terminate("open error");
 	while (line)
 	{
 		line = get_next_line(fd);
@@ -78,7 +79,6 @@ int	count_map_row(char *file_name, map_t *map)
 		free(line);
 	}
 	close(fd);
-	ft_printf("Map contains %i rows \n", map->row);
 	map->row_c = ft_itoa(map->row);
-	return (0);
+	return (0); 
 }

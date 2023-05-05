@@ -39,7 +39,6 @@ void	my_keyhook_1(mlx_key_data_t keydata, void *param)
 	(void)param;
 }
 
-
 void	my_keyhook_2(mlx_key_data_t keydata, void *param)
 {
 	fdf_t	*fdf;
@@ -65,8 +64,21 @@ void	my_keyhook_2(mlx_key_data_t keydata, void *param)
 	(void)param;
 }
 
+void	my_keyhook_3(mlx_key_data_t keydata, void *param)
+{
+	fdf_t	*fdf;
+
+	fdf = (fdf_t *)param;
+	if (keydata.key == MLX_KEY_ESCAPE && keydata.action == MLX_PRESS)
+	{
+		win_close(fdf);
+	}
+	(void)param;
+}
+
 void	my_keyhook(mlx_key_data_t keydata, void *param)
 {
 	my_keyhook_1(keydata, param);
 	my_keyhook_2(keydata, param);
+	my_keyhook_3(keydata, param);
 }

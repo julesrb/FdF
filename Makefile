@@ -48,7 +48,8 @@ SRC_FILES = main \
 			line_up \
 			line_down \
 			map_size \
-			keyhook
+			keyhook \
+			close
 
 SRCS = $(addprefix $(SRC_DIREC), $(addsuffix .c, $(SRC_FILES)))
 OBJS = $(addprefix $(OBJ_DIREC), $(addsuffix .o, $(SRC_FILES)))
@@ -65,7 +66,7 @@ libft:
 				@$(MAKE) -sC $(LIBFT_DIR)
 
 $(NAME): $(OBJ_DIREC) $(OBJS) 
-				$(CC) -g $(CFLAGS) $(OBJS) $(LIBS) $(INCS) -o $(NAME) -g
+				$(CC) -g $(CFLAGS) -fsanitize=address -static-libsan $(OBJS) $(LIBS) $(INCS) -o $(NAME)
 				@echo "- Library $(NAME) created !"
 
 $(OBJ_DIREC)%.o : $(SRC_DIREC)%.c

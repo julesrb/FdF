@@ -58,7 +58,7 @@ point_t	point_project(int x, int y, int z, fdf_t *fdf)
 	return (rtn);
 }
 
-void	*draw_grey_background(void *s, int c, size_t n)
+void	draw_grey_background(void *s, int c, size_t n)
 {
 	size_t			i;
 	unsigned char	*ptr;
@@ -76,7 +76,6 @@ void	*draw_grey_background(void *s, int c, size_t n)
 		ptr[i] = 255;
 		i++;
 	}
-	return (s);
 }
 
 void draw_from_point(fdf_t *fdf, size_t y, size_t x)

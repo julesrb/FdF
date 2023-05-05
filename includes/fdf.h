@@ -19,6 +19,7 @@
 # include "libft.h"
 # include "MLX42.h"
 # include <stdlib.h>
+# include <errno.h>
 
 # define WIDTH 1080
 # define HEIGHT 720
@@ -94,4 +95,8 @@ int		count_map_row(char *file_name, map_t *map);
 int	free_split(char **split);
 
 void	my_keyhook(mlx_key_data_t keydata, void *param);
+
+void	terminate(char *str);
+void	win_close(void *param);
+int		free_grid(grid_t **grid, fdf_t *fdf);
 #endif

@@ -19,6 +19,8 @@ void	line_to_map_data(grid_t **grid, char *line, size_t col, size_t row)
 
 	i = 0;
 	split = ft_split(line, ' ');
+	if (!split)
+		terminate("parse alloc error");
 	while (i < col)
 	{
 		grid[row][i].height = ft_atoi(split[i]);
@@ -68,13 +70,12 @@ int	parse_map(char *file_name, map_t *map)
 	alloc_map(map);
 	fd = open(file_name, O_RDONLY);
 	if (fd < 0)
-	{
-		ft_printf("!! File reading problem !!");
-		return (0);
-	}
+		terminate("open failed");
 	while (i < map->row)
 	{	
 		line = get_next_line(fd);
+		if (!line)
+			terminate("parse alloc error");
 		line_to_map_data(map->grid, line, map->col, i);
 		free(line);
 		i++;

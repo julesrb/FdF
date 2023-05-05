@@ -25,46 +25,29 @@ void	text_info(mlx_t *mlx, char *name, map_t *map)
 	mlx_put_string(mlx, "Zoom out: O", 20, 650);
 }
 
-int	free_grid(grid_t **grid, fdf_t *fdf)
-{
-	size_t	i;
-
-	i = 0;
-	while (fdf->map->row > i)
-	{
-		free(grid[i]);
-		i++;
-	}
-	free(grid);
-	return (0);
-}
-
-void	win_close(void *param)
-{
-	fdf_t	*fdf;
-
-	fdf = (fdf_t *)param;
-	free(fdf->map->row_c);
-	free(fdf->map->col_c);
-	free_grid(fdf->map->grid, fdf);
-	free(fdf->map);
-	free(fdf->name);
-	free(fdf);
-}
-
 fdf_t	*fdf_init(char *name)
 {
 	fdf_t	*fdf;
 
 	fdf = ft_calloc(1, sizeof(fdf_t));
+	if (!fdf)
+		terminate("fdf init error");
 	fdf->name = ft_strdup(name);
+	if (!fdf->name)
+		terminate("fdf init error");
 	fdf->map = ft_calloc(1, sizeof(map_t));
+	if (!fdf->map)
+		terminate("fdf init error");
 	fdf->iso = 1;
 	fdf->zoom = 3;
 	fdf->offset_x = 0;
 	fdf->offset_y = 0;
 	fdf->mlx = mlx_init(WIDTH, HEIGHT, "FDF", false);
+	if (!fdf->mlx)
+		terminate("fdf init error");
 	fdf->img = mlx_new_image(fdf->mlx, WIDTH, HEIGHT);
+	if (!fdf->img)
+		terminate("fdf init error");
 	return (fdf);
 }
 
@@ -73,12 +56,11 @@ int32_t	main(int argc, char *argv[])
 	fdf_t	*fdf;
 
 	if (argc != 2)
-		return (ft_printf("!! Incorrect number of arguments !!"));
+		terminate("Incorrect number of arguments !");
 	if (ft_strnstr(argv[1], ".fdf", ft_strlen(argv[1])) == 0)
-		return (ft_printf("!! Wrong extension !!"));
+		terminate("Wrong extension !");
 	fdf = fdf_init(argv[1]);
-	if (parse_map(argv[1], fdf->map) == -1)
-		return (0);
+	parse_map(argv[1], fdf->map);
 	draw_map(fdf);
 	mlx_key_hook(fdf->mlx, &my_keyhook, fdf);
 	mlx_close_hook(fdf->mlx, &win_close, fdf);
