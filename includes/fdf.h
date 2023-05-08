@@ -13,9 +13,9 @@
 #ifndef FDF_H
 # define FDF_H
 
-#include <fcntl.h>
-#include <stdio.h>
-#include <unistd.h>
+# include <fcntl.h>
+# include <stdio.h>
+# include <unistd.h>
 # include "libft.h"
 # include "MLX42.h"
 # include <stdlib.h>
@@ -24,19 +24,11 @@
 # define WIDTH 1080
 # define HEIGHT 720
 
-/* typedef struct env
-{
-	int 	offset;
-	float	zoom;
-	int		iso;
-	int		top;
-}	env_t; */
-
 typedef struct grid
 {
 	int	height;
 	int	color;
-}	grid_t;
+}	t_grid;
 
 typedef struct map
 {
@@ -44,9 +36,8 @@ typedef struct map
 	char		*row_c;
 	size_t		col;
 	char		*col_c;
-	grid_t **grid;
-}	map_t;
-
+	t_grid		**grid;
+}	t_map;
 
 typedef struct point
 {
@@ -54,49 +45,43 @@ typedef struct point
 	int		y;
 	int		z;
 	int		color;
-}	point_t;
+}	t_point;
 
 typedef struct fdf
 {
-	char*			name;
+	char			*name;
 	float			zoom;
 	int				iso;
 	int				top;
 	int				offset_x;
 	int				offset_y;
-	map_t*			map;
-	mlx_image_t*	img;
-	mlx_t*			mlx;
-}	fdf_t;
+	t_map			*map;
+	mlx_image_t		*img;
+	mlx_t			*mlx;
+}	t_fdf;
 
-
-void	draw_map(fdf_t *fdf);
-int		parse_map(char *file_name, map_t* map);
-void	draw_line(point_t point_a, point_t point_b, mlx_image_t *fdf);
-void	text_info(mlx_t *mlx, char *argv, map_t *map);
+void	draw_map(t_fdf *fdf);
+int		parse_map(char *file_name, t_map *map);
+void	text_info(mlx_t *mlx, char *argv, t_map *map);
 
 uint8_t	ft_atohex(char *str);
 int		ft_ahextorgba(char *str);
 void	calc_grad_steps(int i, int cl_a, int cl_b, float rgba[4]);
 int		calc_grad_color(int steps, int cl_a, float rgba[4]);
 
-void	draw_line_down(point_t a, point_t b, mlx_image_t *fdf);
-void	draw_line_down_y_long(point_t a, point_t b, int *dist, mlx_image_t *fdf);
-void	draw_line_down_x_long(point_t a, point_t b, int *dist, mlx_image_t *fdf);
-
-void	draw_line_up_x_long(point_t a, point_t b, int *dist, mlx_image_t *fdf);
-void	draw_line_up_y_long(point_t a, point_t b, int *dist, mlx_image_t *fdf);
-void	draw_line_up(point_t a, point_t b, mlx_image_t *fdf);
+void	draw_line(t_point point_a, t_point point_b, mlx_image_t *fdf);
+void	draw_line_down(t_point a, t_point b, mlx_image_t *fdf);
+void	draw_line_up(t_point a, t_point b, mlx_image_t *fdf);
 
 int		count_split(char **split);
-int		count_map_colums(char *file_name, map_t *map);
-int		count_map_row(char *file_name, map_t *map);
+int		count_map_colums(char *file_name, t_map *map);
+int		count_map_row(char *file_name, t_map *map);
 
-int	free_split(char **split);
+int		free_split(char **split);
 
 void	my_keyhook(mlx_key_data_t keydata, void *param);
 
 void	terminate(char *str);
 void	win_close(void *param);
-int		free_grid(grid_t **grid, fdf_t *fdf);
+int		free_grid(t_grid **grid, t_fdf *fdf);
 #endif

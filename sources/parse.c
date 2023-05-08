@@ -12,7 +12,7 @@
 
 #include "fdf.h"
 
-void	line_to_map_data(grid_t **grid, char *line, size_t col, size_t row)
+void	line_to_map_data(t_grid **grid, char *line, size_t col, size_t row)
 {
 	char	**split;
 	size_t	i;
@@ -33,19 +33,19 @@ void	line_to_map_data(grid_t **grid, char *line, size_t col, size_t row)
 	free_split(split);
 }
 
-int	alloc_map(map_t *map)
+int	alloc_map(t_map *map)
 {
 	size_t		line;
 
 	line = 0;
-	map->grid = (grid_t **)malloc(map->row * sizeof(grid_t *));
+	map->grid = (t_grid **)malloc(map->row * sizeof(t_grid *));
 	if (!map->grid)
 	{
 		return (0);
 	}
 	while (line < map->row)
 	{
-		map->grid[line] = (grid_t *)malloc(map->col * sizeof(grid_t));
+		map->grid[line] = (t_grid *)malloc(map->col * sizeof(t_grid));
 		if (!map->grid[line])
 		{
 			while (line-- > 0)
@@ -58,7 +58,7 @@ int	alloc_map(map_t *map)
 	return (0);
 }
 
-int	parse_map(char *file_name, map_t *map)
+int	parse_map(char *file_name, t_map *map)
 {
 	int		fd;
 	size_t	i;

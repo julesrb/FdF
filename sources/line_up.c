@@ -12,7 +12,7 @@
 
 #include "fdf.h"
 
-void	draw_line_up_x_long(point_t a, point_t b, int *dist, mlx_image_t *fdf)
+void	draw_line_up_x_long(t_point a, t_point b, int *dist, mlx_image_t *fdf)
 {
 	float	f;
 	int		i;
@@ -36,7 +36,7 @@ void	draw_line_up_x_long(point_t a, point_t b, int *dist, mlx_image_t *fdf)
 	}
 }
 
-void	draw_line_up_y_long(point_t a, point_t b, int *dist, mlx_image_t *fdf)
+void	draw_line_up_y_long(t_point a, t_point b, int *dist, mlx_image_t *fdf)
 {
 	float	f;
 	int		i;
@@ -60,7 +60,7 @@ void	draw_line_up_y_long(point_t a, point_t b, int *dist, mlx_image_t *fdf)
 	}
 }
 
-void	draw_line_up(point_t a, point_t b, mlx_image_t *fdf)
+void	draw_line_up(t_point a, t_point b, mlx_image_t *fdf)
 {
 	int		dx;
 	int		dy;

@@ -14,9 +14,9 @@
 
 void	my_keyhook_1(mlx_key_data_t keydata, void *param)
 {
-	fdf_t	*fdf;
+	t_fdf	*fdf;
 
-	fdf = (fdf_t *)param;
+	fdf = (t_fdf *)param;
 	if (keydata.key == MLX_KEY_I && keydata.action == MLX_PRESS)
 	{
 		fdf->zoom = fdf->zoom * 1.1;
@@ -41,9 +41,9 @@ void	my_keyhook_1(mlx_key_data_t keydata, void *param)
 
 void	my_keyhook_2(mlx_key_data_t keydata, void *param)
 {
-	fdf_t	*fdf;
+	t_fdf	*fdf;
 
-	fdf = (fdf_t *)param;
+	fdf = (t_fdf *)param;
 	if (keydata.key == MLX_KEY_W && keydata.action == MLX_PRESS)
 	{
 		fdf->offset_y = fdf->offset_y + 30;
@@ -66,9 +66,9 @@ void	my_keyhook_2(mlx_key_data_t keydata, void *param)
 
 void	my_keyhook_3(mlx_key_data_t keydata, void *param)
 {
-	fdf_t	*fdf;
+	t_fdf	*fdf;
 
-	fdf = (fdf_t *)param;
+	fdf = (t_fdf *)param;
 	if (keydata.key == MLX_KEY_ESCAPE && keydata.action == MLX_PRESS)
 	{
 		win_close(fdf);

@@ -12,7 +12,7 @@
 
 #include "fdf.h"
 
-void	text_info(mlx_t *mlx, char *name, map_t *map)
+void	text_info(mlx_t *mlx, char *name, t_map *map)
 {
 	mlx_put_string(mlx, "NAME", 20, 25);
 	mlx_put_string(mlx, ft_strchr(name, '/'), 100, 25);
@@ -25,17 +25,17 @@ void	text_info(mlx_t *mlx, char *name, map_t *map)
 	mlx_put_string(mlx, "Zoom out: O", 20, 650);
 }
 
-fdf_t	*fdf_init(char *name)
+t_fdf	*fdf_init(char *name)
 {
-	fdf_t	*fdf;
+	t_fdf	*fdf;
 
-	fdf = ft_calloc(1, sizeof(fdf_t));
+	fdf = ft_calloc(1, sizeof(t_fdf));
 	if (!fdf)
 		terminate("fdf init error");
 	fdf->name = ft_strdup(name);
 	if (!fdf->name)
 		terminate("fdf init error");
-	fdf->map = ft_calloc(1, sizeof(map_t));
+	fdf->map = ft_calloc(1, sizeof(t_map));
 	if (!fdf->map)
 		terminate("fdf init error");
 	fdf->iso = 1;
@@ -53,7 +53,7 @@ fdf_t	*fdf_init(char *name)
 
 int32_t	main(int argc, char *argv[])
 {
-	fdf_t	*fdf;
+	t_fdf	*fdf;
 
 	if (argc != 2)
 		terminate("Incorrect number of arguments !");

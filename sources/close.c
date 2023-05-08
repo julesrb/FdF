@@ -12,7 +12,7 @@
 
 #include "fdf.h"
 
-int	free_grid(grid_t **grid, fdf_t *fdf)
+int	free_grid(t_grid **grid, t_fdf *fdf)
 {
 	size_t	i;
 
@@ -28,16 +28,15 @@ int	free_grid(grid_t **grid, fdf_t *fdf)
 
 void	win_close(void *param)
 {
-	fdf_t	*fdf;
+	t_fdf	*fdf;
 
-	fdf = (fdf_t *)param;
+	fdf = (t_fdf *)param;
 	free(fdf->map->row_c);
 	free(fdf->map->col_c);
 	free_grid(fdf->map->grid, fdf);
 	free(fdf->map);
 	free(fdf->name);
 	free(fdf);
-	mlx_terminate(fdf->mlx);
 }
 
 void	terminate(char *str)

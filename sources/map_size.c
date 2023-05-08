@@ -37,7 +37,7 @@ int	count_split(char **split)
 	return (c);
 }
 
-int	count_map_colums(char *file_name, map_t *map)
+int	count_map_colums(char *file_name, t_map *map)
 {
 	int		fd;
 	char	**split;
@@ -60,7 +60,7 @@ int	count_map_colums(char *file_name, map_t *map)
 	return (0);
 }
 
-int	count_map_row(char *file_name, map_t *map)
+int	count_map_row(char *file_name, t_map *map)
 {
 	int		fd;
 	char	*line;
@@ -80,5 +80,5 @@ int	count_map_row(char *file_name, map_t *map)
 	}
 	close(fd);
 	map->row_c = ft_itoa(map->row);
-	return (0); 
+	return (0);
 }

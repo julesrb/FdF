@@ -66,6 +66,7 @@ libft:
 				@$(MAKE) -sC $(LIBFT_DIR)
 
 $(NAME): $(OBJ_DIREC) $(OBJS) 
+				$(CC) $(CFLAGS) $(OBJS) $(LIBS) $(INCS) -o $(NAME)
 				$(CC) -g $(CFLAGS) -fsanitize=address -static-libsan $(OBJS) $(LIBS) $(INCS) -o $(NAME)
 				@echo "- Library $(NAME) created !"
 
@@ -79,11 +80,11 @@ $(OBJ_DIREC):
 
 clean :
 				@$(MAKE) -sC $(LIBFT_DIR) clean
-				@echo "- Deleted $(LIBFT_DIR) successfully"
+				@echo "- Deleted LIBFT successfully"
 				@rm -f $(LIBMLX)/build
-				@echo "- Deleted $(LIBMLX) successfully"
-				@rm -fr $(OBJS)
-				@echo "- Deleted $(OBJS) successfully"
+				@echo "- Deleted LIBMLX_ successfully"
+				@rm -fr $(OBJ_DIREC)
+				@echo "- Deleted $(OBJ_DIREC) successfully"
 
 fclean :		clean
 				

@@ -12,7 +12,7 @@
 
 #include "fdf.h"
 
-void	draw_line(point_t point_a, point_t point_b, mlx_image_t *fdf)
+void	draw_line(t_point point_a, t_point point_b, mlx_image_t *fdf)
 {
 	if (point_a.x <= point_b.x)
 	{
@@ -30,9 +30,9 @@ void	draw_line(point_t point_a, point_t point_b, mlx_image_t *fdf)
 	}
 }
 
-point_t	point_project(int x, int y, int z, fdf_t *fdf)
+t_point	point_project(int x, int y, int z, t_fdf *fdf)
 {
-	point_t	rtn;
+	t_point	rtn;
 
 	if (fdf->top == 1)
 	{
@@ -46,8 +46,8 @@ point_t	point_project(int x, int y, int z, fdf_t *fdf)
 	if (fdf->iso == 1)
 	{
 		rtn.x = x * fdf->zoom + y * fdf->zoom + fdf->offset_x;
-		rtn.y = y * fdf->zoom / 2 - x * fdf->zoom / 2 - z * fdf->zoom / 2 
-				+ fdf->offset_y;
+		rtn.y = y * fdf->zoom / 2 - x * fdf->zoom / 2 - z * fdf->zoom / 2
+			+ fdf->offset_y;
 		rtn.z = z;
 		fdf->top = 0;
 		rtn.x = rtn.x + WIDTH / 2 - ((fdf->map->col - 1) * fdf->zoom
@@ -78,10 +78,10 @@ void	draw_grey_background(void *s, int c, size_t n)
 	}
 }
 
-void draw_from_point(fdf_t *fdf, size_t y, size_t x)
+void	draw_from_point(t_fdf *fdf, size_t y, size_t x)
 {
-	point_t	point_a;
-	point_t	point_b;
+	t_point	point_a;
+	t_point	point_b;
 
 	point_a = point_project(x, y, fdf->map->grid[y][x].height, fdf);
 	point_a.color = fdf->map->grid[y][x].color;
@@ -99,12 +99,13 @@ void draw_from_point(fdf_t *fdf, size_t y, size_t x)
 	}
 }
 
-void	draw_map(fdf_t *fdf)
+void	draw_map(t_fdf *fdf)
 {
 	size_t	x;
 	size_t	y;
 
-	draw_grey_background(fdf->img->pixels, 35, fdf->img->width * fdf->img->height * sizeof(int32_t));
+	draw_grey_background(fdf->img->pixels, 35,
+		fdf->img->width * fdf->img->height * sizeof(int32_t));
 	y = 0;
 	while (y < fdf->map->row)
 	{

@@ -18,9 +18,9 @@
 # include <stdarg.h>
 # include <stdint.h>
 
-#  ifndef BUFFER_SIZE
-#   define BUFFER_SIZE 10
-#  endif
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 10
+# endif
 
 typedef struct s_list
 {
@@ -54,17 +54,17 @@ int		ft_memcmp(const void *s1, const void *s2, size_t n);
 
 /* Put */
 
-int	ft_putnbr_fd(int nb, int fd);
-int	ft_putstr_fd(char *s, int fd);
-int	ft_putchar_fd(char c, int fd);
-int	ft_putendl_fd(char *s, int fd);
-int	ft_putadd_fd(intptr_t adress, int fd);
-int	ft_putnbr_uns_fd(unsigned int nb, int fd);
-int	ft_puthex_fd(unsigned long long nb, char x, int fd);
+int		ft_putnbr_fd(int nb, int fd);
+int		ft_putstr_fd(char *s, int fd);
+int		ft_putchar_fd(char c, int fd);
+int		ft_putendl_fd(char *s, int fd);
+int		ft_putadd_fd(intptr_t adress, int fd);
+int		ft_putnbr_uns_fd(unsigned int nb, int fd);
+int		ft_puthex_fd(unsigned long long nb, char x, int fd);
 
 /* Print */
 
-int	ft_printf(const char *first, ...);
+int		ft_printf(const char *first, ...);
 
 /* Get next line */
 
@@ -87,7 +87,6 @@ char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	*ft_strmapi(char const *s, char (*f)(unsigned int, char));
 char	*ft_strnstr(const char *big, const char *little, size_t len);
 char	**ft_split(char const *s, char c);
-
 
 /* CHAINED LISTS */
 
